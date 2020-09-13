@@ -4,6 +4,7 @@ import 'package:runanonymous/component/speedometer/Speedometer.dart';
 
 import '../component/common/MainMenuButton.dart';
 
+/// Tracking page when user is running.
 class TrackingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

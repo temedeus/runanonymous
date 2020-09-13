@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// Stateful (dropdown value) form dropdown widget.
 class FormDropDownWidget extends StatefulWidget {
   FormDropDownWidget(
       {Key key,
@@ -33,7 +33,6 @@ class _FormDropDownWidgetState extends State<FormDropDownWidget> {
       icon: Icon(Icons.arrow_downward),
       iconSize: 24,
       elevation: 16,
-      style: TextStyle(color: Colors.deepPurple),
       onChanged: (String newValue) {
         setState(() {
           dropdownValue = newValue;

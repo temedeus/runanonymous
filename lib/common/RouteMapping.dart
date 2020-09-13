@@ -1,6 +1,9 @@
 /// Different routes used in app.
 enum RouteMapping { HOME, TRACKING }
 
+/// Starting view.
+const INITIAL_ROUTE = RouteMapping.HOME;
+
 /// Path definitions for each route.
 extension RoutePath on RouteMapping {
   String get path {

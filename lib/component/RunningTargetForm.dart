@@ -1,11 +1,13 @@
 // Create a Form widget.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:runanonymous/common/DistanceUnit.dart';
 import 'package:runanonymous/common/RouteMapping.dart';
+import 'package:runanonymous/common/SpeedUnit.dart';
 import 'package:runanonymous/component/common/NumberInputField.dart';
 import 'package:runanonymous/validator/Validators.dart';
 
-import 'common/FormDropdown.dart';
+import 'common/FormDropdownWidget.dart';
 import 'common/MainMenuButton.dart';
 
 /// Form for setting up targets for your running sessions. I.e. distance, time
@@ -65,8 +67,8 @@ class RunningTargetFormState extends State<RunningTargetForm> {
             Expanded(
                 child: FormDropDownWidget(
               labelText: "Unit",
-              items: ["Km", "Miles"],
-              initialValue: "Km",
+              items: [DistanceUnit.KM.unit, DistanceUnit.M.unit],
+              initialValue: DistanceUnit.KM.unit,
             ))
           ],
         ),
@@ -125,8 +127,8 @@ class RunningTargetFormState extends State<RunningTargetForm> {
             Expanded(
                 child: FormDropDownWidget(
               labelText: "Unit",
-              items: ["Kmh", "Mph"],
-              initialValue: "Kmh",
+              items: [SpeedUnit.KMH.unit, SpeedUnit.MPH.unit],
+              initialValue: SpeedUnit.KMH.unit,
             ))
           ],
         ),
