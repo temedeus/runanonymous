@@ -41,7 +41,7 @@ class RunningTargetFormState extends State<RunningTargetForm> {
           _buildSpeedField(),
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: MainMenuButton("Start", getStartTrackingCallback())),
+              child: MainMenuButton("Start", () => formSubmitAction())),
         ],
       ),
     );
@@ -138,15 +138,14 @@ class RunningTargetFormState extends State<RunningTargetForm> {
     );
   }
 
-  VoidCallback getStartTrackingCallback() {
+  void formSubmitAction() {
     RunningTarget target = new RunningTarget();
+    target.distance = _distance;
+    target.speed = _speed;
 
-    return () => {
-          if (_formKey.currentState.validate())
-            {
-              runningTargetBloc.updateRunningTarget(target),
-              Navigator.pushNamed(context, RouteMapping.TRACKING.path)
-            }
-        };
+    if (_formKey.currentState.validate()) {
+      runningTargetBloc.updateRunningTarget(target);
+      Navigator.pushNamed(context, RouteMapping.TRACKING.path);
+    }
   }
 }

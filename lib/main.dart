@@ -20,23 +20,20 @@ class RunanonymousApp extends StatelessWidget {
                 TextTheme(headline6: TextStyle(color: Colors.white))),
         initialRoute: INITIAL_ROUTE.path,
         routes: {
-          RouteMapping.HOME.path: (context) =>
-              _RunanonymousTemplate(MainPage()),
-          RouteMapping.TRACKING.path: (context) =>
-              _RunanonymousTemplate(TrackingPage())
+          RouteMapping.HOME.path: (context) => _AppTemplate(MainPage()),
+          RouteMapping.TRACKING.path: (context) => _AppTemplate(TrackingPage())
         });
   }
 }
 
 /// Generic layout for views.
-class _RunanonymousTemplate extends StatelessWidget {
-  _RunanonymousTemplate(this.widget);
+class _AppTemplate extends StatelessWidget {
+  _AppTemplate(this.widget);
   final Widget widget;
-  final RunningTargetBloc runningTargetBloc = new RunningTargetBloc();
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      bloc: RunningTargetBloc(),
+      bloc: runningTargetBloc,
       child: Scaffold(
           appBar: AppBar(
             title: Text('Runonymous'),

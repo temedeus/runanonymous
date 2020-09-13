@@ -14,18 +14,14 @@ class BlocProvider<T extends AbstractBloc> extends StatefulWidget {
     return provider.bloc;
   }
 
-  static Type _providerType<T>() => T;
-
   @override
   State createState() => _BlocProviderState();
 }
 
 class _BlocProviderState extends State<BlocProvider> {
-  // 4
   @override
   Widget build(BuildContext context) => widget.child;
 
-  // 5
   @override
   void dispose() {
     widget.bloc.dispose();
