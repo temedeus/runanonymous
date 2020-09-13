@@ -12,8 +12,8 @@ class RunningTargetBloc extends AbstractBloc {
 
   RunningTarget _runningTarget = new RunningTarget();
 
-  void addToCart(item) {
-    this._runningTarget = _runningTarget;
+  void updateRunningTarget(runningTarget) {
+    this._runningTarget = runningTarget;
     _runningTargetStreamController.sink.add(_runningTarget);
   }
 
@@ -22,3 +22,5 @@ class RunningTargetBloc extends AbstractBloc {
     _runningTargetStreamController.close();
   }
 }
+
+final runningTargetBloc = RunningTargetBloc();

@@ -1,10 +1,12 @@
 // Create a Form widget.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:runanonymous/bloc/RunningTargetBloc.dart';
 import 'package:runanonymous/common/DistanceUnit.dart';
 import 'package:runanonymous/common/RouteMapping.dart';
 import 'package:runanonymous/common/SpeedUnit.dart';
 import 'package:runanonymous/component/common/NumberInputField.dart';
+import 'package:runanonymous/model/RunningTarget.dart';
 import 'package:runanonymous/validator/Validators.dart';
 
 import 'common/FormDropdownWidget.dart';
@@ -137,9 +139,14 @@ class RunningTargetFormState extends State<RunningTargetForm> {
   }
 
   VoidCallback getStartTrackingCallback() {
+    RunningTarget target = new RunningTarget();
+
     return () => {
           if (_formKey.currentState.validate())
-            {Navigator.pushNamed(context, RouteMapping.TRACKING.path)}
+            {
+              runningTargetBloc.updateRunningTarget(target),
+              Navigator.pushNamed(context, RouteMapping.TRACKING.path)
+            }
         };
   }
 }
