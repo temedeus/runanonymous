@@ -1,16 +1,14 @@
 // Create a Form widget.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:runanonymous/bloc/RunningTargetBloc.dart';
 import 'package:runanonymous/common/DistanceUnit.dart';
 import 'package:runanonymous/common/RouteMapping.dart';
 import 'package:runanonymous/common/SpeedUnit.dart';
 import 'package:runanonymous/component/common/NumberInputField.dart';
-import 'package:runanonymous/model/RunningTarget.dart';
-import 'package:runanonymous/validator/Validators.dart';
 
-import 'common/FormDropdownWidget.dart';
-import 'common/MainMenuButton.dart';
+import '../common/FormDropdownWidget.dart';
+import '../common/MainMenuButton.dart';
+import 'TimeInput.dart';
 
 /// Form for setting up targets for your running sessions. I.e. distance, time
 /// and speed.
@@ -25,10 +23,6 @@ class RunningTargetForm extends StatefulWidget {
 
 class RunningTargetFormState extends State<RunningTargetForm> {
   final _formKey = GlobalKey<FormState>();
-  int _distance;
-
-  int _time;
-  int _speed;
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +31,13 @@ class RunningTargetFormState extends State<RunningTargetForm> {
       child: Column(
         children: <Widget>[
           _buildDistanceField(),
-          _buildTimeField(),
+          TimeInput(),
           _buildSpeedField(),
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: MainMenuButton("Start", () => formSubmitAction())),
+              child: MainMenuButton("Start", () {
+                formSubmitAction();
+              })),
         ],
       ),
     );
@@ -58,11 +54,7 @@ class RunningTargetFormState extends State<RunningTargetForm> {
                   padding: const EdgeInsets.only(right: 20),
                   child: NumberInputField(
                     "Distance",
-                    (String value) {
-                      setState(() {
-                        _distance = int.tryParse(value);
-                      });
-                    },
+                    onSaved: (String value) {},
                     hintText: "0",
                   ),
                 )),
@@ -78,35 +70,6 @@ class RunningTargetFormState extends State<RunningTargetForm> {
     );
   }
 
-  Widget _buildTimeField() {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: NumberInputField("Hours", (text) {},
-                  hintText: "00",
-                  validator: Validators().getNumberRangeValidator(0, 100)),
-            ),
-            Expanded(
-              flex: 1,
-              child: NumberInputField("Minutes", (text) {},
-                  hintText: "00",
-                  validator: Validators().getNumberRangeValidator(0, 60)),
-            ),
-            Expanded(
-              flex: 1,
-              child: NumberInputField("Seconds", (text) {},
-                  hintText: "00",
-                  validator: Validators().getNumberRangeValidator(0, 60)),
-            )
-          ],
-        ),
-      ],
-    );
-  }
-
   Widget _buildSpeedField() {
     return Column(
       children: <Widget>[
@@ -116,15 +79,8 @@ class RunningTargetFormState extends State<RunningTargetForm> {
                 flex: 3,
                 child: Padding(
                   padding: const EdgeInsets.only(right: 20),
-                  child: NumberInputField(
-                    "Speed",
-                    (String value) {
-                      setState(() {
-                        _speed = int.tryParse(value);
-                      });
-                    },
-                    hintText: "0",
-                  ),
+                  child: NumberInputField("Target Speed",
+                      onSaved: (String value) {}, hintText: "0"),
                 )),
             Expanded(
                 child: FormDropDownWidget(
@@ -139,12 +95,7 @@ class RunningTargetFormState extends State<RunningTargetForm> {
   }
 
   void formSubmitAction() {
-    RunningTarget target = new RunningTarget();
-    target.distance = _distance;
-    target.speed = _speed;
-
     if (_formKey.currentState.validate()) {
-      runningTargetBloc.updateRunningTarget(target);
       Navigator.pushNamed(context, RouteMapping.TRACKING.path);
     }
   }

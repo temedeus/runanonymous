@@ -12,6 +12,22 @@ class RunningTargetBloc extends AbstractBloc {
 
   RunningTarget _runningTarget = new RunningTarget();
 
+  void updateSpeed(runningTarget) {
+    this._runningTarget = runningTarget;
+    _runningTargetStreamController.sink.add(_runningTarget);
+  }
+
+  void updateTime(runningTime) {
+    this._runningTarget.time = runningTime;
+
+    _runningTargetStreamController.sink.add(_runningTarget);
+  }
+
+  void updateDistance(runningTarget) {
+    this._runningTarget = runningTarget;
+    _runningTargetStreamController.sink.add(_runningTarget);
+  }
+
   void updateRunningTarget(runningTarget) {
     this._runningTarget = runningTarget;
     _runningTargetStreamController.sink.add(_runningTarget);

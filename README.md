@@ -1,4 +1,4 @@
-# Ranonymous
+# Runonymous
 
 Simple running pacer that persists nothing of user. All running data and tracking are kept within 
 client only (aside from what Google/Apple might gather by default just by using the device, but that 

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:runanonymous/component/RunningTargetForm.dart';
+import 'package:runanonymous/component/runningtargetform/RunningTargetForm.dart';
 
 /// Main page where user inputs running data.
 class MainPage extends StatelessWidget {
