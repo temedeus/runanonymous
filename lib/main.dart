@@ -10,7 +10,7 @@ void main() => runApp(RunanonymousApp());
 class RunanonymousApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<RunningTargetBloc>(
       create: (BuildContext context) => RunningTargetBloc(),
       child: MaterialApp(
         theme: new ThemeData(

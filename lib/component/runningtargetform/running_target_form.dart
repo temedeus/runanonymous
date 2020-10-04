@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runanonymous/bloc/running_target_bloc.dart';
-import 'package:runanonymous/bloc/running_target_state.dart';
 import 'package:runanonymous/common/distance_unit.dart';
 import 'package:runanonymous/common/route_mapping.dart';
 import 'package:runanonymous/common/speed_unit.dart';
@@ -29,22 +28,26 @@ class RunningTargetFormState extends State<RunningTargetForm> {
 
   @override
   Widget build(BuildContext context) {
-   return Form(
-      key: _formKey,
-      child: Column(
-        children: <Widget>[
-          _buildDistanceField(),
-          TimeInput(),
-          _buildSpeedField(),
-          Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: MainMenuButton("Start", () {
-                formSubmitAction();
-              })),
-        ],
-      ),
+    return BlocBuilder(
+      cubit: BlocProvider.of<RunningTargetBloc>(context),
+      builder: (BuildContext context, state) {
+        return Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              _buildDistanceField(),
+              TimeInput(),
+              _buildSpeedField(),
+              Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: MainMenuButton("Start ${state.speed}", () {
+                    formSubmitAction();
+                  })),
+            ],
+          ),
+        );
+      },
     );
-
   }
 
   Widget _buildDistanceField() {
