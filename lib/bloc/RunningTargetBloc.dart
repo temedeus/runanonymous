@@ -8,9 +8,10 @@ class RunningTargetBloc extends AbstractBloc {
   final _runningTargetStreamController = StreamController.broadcast();
 
   Stream get getStream => _runningTargetStreamController.stream;
-  RunningTarget get getRunningTarget => _runningTarget;
 
   RunningTarget _runningTarget = new RunningTarget();
+
+  get runningTargetStreamController => _runningTargetStreamController;
 
   void updateSpeed(runningTarget) {
     this._runningTarget = runningTarget;
@@ -36,6 +37,11 @@ class RunningTargetBloc extends AbstractBloc {
   @override
   void dispose() {
     _runningTargetStreamController.close();
+  }
+
+  @override
+  mapEventToState() {
+    // TODO: implement mapEventToState
   }
 }
 

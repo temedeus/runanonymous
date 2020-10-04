@@ -1,6 +1,8 @@
 // Create a Form widget.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:runanonymous/bloc/BlocProvider.dart';
+import 'package:runanonymous/bloc/RunningTargetBloc.dart';
 import 'package:runanonymous/common/DistanceUnit.dart';
 import 'package:runanonymous/common/RouteMapping.dart';
 import 'package:runanonymous/common/SpeedUnit.dart';
@@ -23,9 +25,10 @@ class RunningTargetForm extends StatefulWidget {
 
 class RunningTargetFormState extends State<RunningTargetForm> {
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<RunningTargetBloc>(context);
+
     return Form(
       key: _formKey,
       child: Column(
