@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
-import 'package:runanonymous/component/speedometer/SpeedText.dart';
+import 'package:runanonymous/component/speedometer/speed_text.dart';
 
 class Speedometer extends StatefulWidget {
   @override

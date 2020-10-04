@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:runanonymous/validator/Validators.dart';
+import 'package:runanonymous/validator/validators.dart';
 
 class NumberInputField extends StatelessWidget {
   NumberInputField(this.label,

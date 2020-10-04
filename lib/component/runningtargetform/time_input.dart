@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:runanonymous/bloc/RunningTargetBloc.dart';
-import 'package:runanonymous/model/RunningTime.dart';
 
-import '../common/NumberInputField.dart';
+import 'file:///C:/Users/teemu/AndroidStudioProjects/simple_runner/lib/bloc/running_time.dart';
+
+import '../common/number_input_field.dart';
 
 class TimeInput extends StatefulWidget {
   TimeInput({Key key}) : super(key: key);
@@ -22,10 +22,10 @@ class _TimeInputState extends State<TimeInput> {
 
   void addControllerListeners() {
     VoidCallback listener = () => {
-          runningTargetBloc.updateTime(RunningTime()
-            ..hour = int.tryParse(_hourController.text)
-            ..minute = int.tryParse(_minuteController.text)
-            ..seconds = int.tryParse(_secondController.text))
+          //    runningTargetBloc.updateTime(RunningTime()
+          //   ..hour = int.tryParse(_hourController.text)
+          //   ..minute = int.tryParse(_minuteController.text)
+          //   ..seconds = int.tryParse(_secondController.text))
         };
     _hourController.addListener(listener);
     _minuteController.addListener(listener);

@@ -1,16 +1,17 @@
 // Create a Form widget.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:runanonymous/bloc/BlocProvider.dart';
-import 'package:runanonymous/bloc/RunningTargetBloc.dart';
-import 'package:runanonymous/common/DistanceUnit.dart';
-import 'package:runanonymous/common/RouteMapping.dart';
-import 'package:runanonymous/common/SpeedUnit.dart';
-import 'package:runanonymous/component/common/NumberInputField.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:runanonymous/bloc/running_target_bloc.dart';
+import 'package:runanonymous/bloc/running_target_state.dart';
+import 'package:runanonymous/common/distance_unit.dart';
+import 'package:runanonymous/common/route_mapping.dart';
+import 'package:runanonymous/common/speed_unit.dart';
+import 'package:runanonymous/component/common/number_input_field.dart';
 
-import '../common/FormDropdownWidget.dart';
-import '../common/MainMenuButton.dart';
-import 'TimeInput.dart';
+import '../common/form_dropdown_widget.dart';
+import '../common/main_menu_button.dart';
+import 'time_input.dart';
 
 /// Form for setting up targets for your running sessions. I.e. distance, time
 /// and speed.
@@ -25,11 +26,10 @@ class RunningTargetForm extends StatefulWidget {
 
 class RunningTargetFormState extends State<RunningTargetForm> {
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<RunningTargetBloc>(context);
-
-    return Form(
+   return Form(
       key: _formKey,
       child: Column(
         children: <Widget>[
@@ -44,6 +44,7 @@ class RunningTargetFormState extends State<RunningTargetForm> {
         ],
       ),
     );
+
   }
 
   Widget _buildDistanceField() {
