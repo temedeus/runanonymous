@@ -9,7 +9,7 @@ import 'package:runanonymous/common/distance_unit.dart';
 import 'package:runanonymous/common/speed_unit.dart';
 
 class RunningTargetBloc
-    extends Bloc<AbstractRunningTimeEvent, AbstractRunningTargetState> {
+    extends Bloc<AbstractRunningTimeEvent, RunningTargetState> {
   static final RunningTargetState _initialState = RunningTargetState(
     distance: null,
     time: new RunningTime(),
@@ -21,7 +21,7 @@ class RunningTargetBloc
   RunningTargetBloc() : super(_initialState);
 
   RunningTargetState fromOldSettingState(
-    AbstractRunningTargetState oldState, {
+    RunningTargetState oldState, {
     distance,
     distanceUnit,
     time,
@@ -38,7 +38,7 @@ class RunningTargetBloc
   }
 
   @override
-  Stream<AbstractRunningTargetState> mapEventToState(
+  Stream<RunningTargetState> mapEventToState(
       AbstractRunningTimeEvent event) async* {
     final _state = state;
     if (event is UpdateDistanceEvent) {
