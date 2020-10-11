@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runanonymous/bloc/running_target_bloc.dart';
+import 'package:runanonymous/bloc/running_time.dart';
+import 'package:runanonymous/bloc/running_time_event.dart';
 import 'package:runanonymous/common/distance_unit.dart';
 import 'package:runanonymous/common/route_mapping.dart';
 import 'package:runanonymous/common/speed_unit.dart';
@@ -31,16 +33,32 @@ class RunningTargetFormState extends State<RunningTargetForm> {
     return BlocBuilder(
       cubit: BlocProvider.of<RunningTargetBloc>(context),
       builder: (BuildContext context, state) {
+        String targetSpeed = state.speed ?? "--";
+        String targetSpeedText = "Target speed: \n" + targetSpeed;
         return Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
               _buildDistanceField(),
-              TimeInput(),
-              _buildSpeedField(),
+              TimeInput(
+                  changeListener: (hours, minutes, seconds) => {
+                        BlocProvider.of<RunningTargetBloc>(context)
+                            .add(UpdateRunningTimeEvent(RunningTime()
+                              ..hour = int.tryParse(hours)
+                              ..minute = int.tryParse(minutes)
+                              ..seconds = int.tryParse(seconds)))
+                      }),
+              _buildSpeedUnitField(),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: MainMenuButton("Start ${state.speed}", () {
+                  child: Text(
+                    targetSpeedText,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  )),
+              Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: MainMenuButton("Start", () {
                     formSubmitAction();
                   })),
             ],
@@ -77,27 +95,16 @@ class RunningTargetFormState extends State<RunningTargetForm> {
     );
   }
 
-  Widget _buildSpeedField() {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: NumberInputField("Target Speed",
-                      onSaved: (String value) {}, hintText: "0"),
-                )),
-            Expanded(
-                child: FormDropDownWidget(
-              labelText: "Unit",
-              items: [SpeedUnit.KMH.unit, SpeedUnit.MPH.unit],
-              initialValue: SpeedUnit.KMH.unit,
-            ))
-          ],
-        ),
+  Widget _buildSpeedUnitField() {
+    return FormDropDownWidget(
+      labelText: "Unit",
+      items: [
+        SpeedUnit.KMH.unit,
+        SpeedUnit.MPH.unit,
+        SpeedUnit.MPK.unit,
+        SpeedUnit.MPM.unit
       ],
+      initialValue: SpeedUnit.KMH.unit,
     );
   }
 

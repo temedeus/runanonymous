@@ -14,7 +14,7 @@ class RunningTargetBloc
     distance: null,
     time: new RunningTime(),
     distanceUnit: DistanceUnit.KM,
-    speed: 666,
+    speed: null,
     speedUnit: SpeedUnit.KMH,
   );
 

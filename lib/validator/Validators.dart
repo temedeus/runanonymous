@@ -20,7 +20,7 @@ class Validators {
       var hour = double.tryParse(value.replaceAll(",", "."));
 
       if (hour == null || hour < min || hour > max) {
-        return "Not proper number!";
+        return "Range ${min} to  ${max}";
       }
       return null;
     };

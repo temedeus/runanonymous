@@ -1,12 +1,16 @@
-enum SpeedUnit { KMH, MPH }
+enum SpeedUnit { KMH, MPH, MPM, MPK }
 
 extension SpeedUnitClear on SpeedUnit {
   String get unit {
     switch (this) {
       case SpeedUnit.KMH:
-        return "Kmh";
+        return "Kilometers per hour";
       case SpeedUnit.MPH:
-        return "Mph";
+        return "Milers per hour";
+      case SpeedUnit.MPM:
+        return "Minutes per mile";
+      case SpeedUnit.MPK:
+        return "Minutes per kilometer";
       default:
         return null;
     }

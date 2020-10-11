@@ -1,67 +1,66 @@
 import 'package:flutter/cupertino.dart';
-
-import 'file:///C:/Users/teemu/AndroidStudioProjects/simple_runner/lib/bloc/running_time.dart';
+import 'package:runanonymous/bloc/running_time.dart';
+import 'package:runanonymous/validator/validators.dart';
 
 import '../common/number_input_field.dart';
 
 class TimeInput extends StatefulWidget {
-  TimeInput({Key key}) : super(key: key);
+  TimeInput({Key key, this.changeListener}) : super(key: key);
+
+  final Function changeListener;
 
   @override
-  _TimeInputState createState() => _TimeInputState();
+  _TimeInputState createState() =>
+      _TimeInputState(changeListener: changeListener);
 }
 
 class _TimeInputState extends State<TimeInput> {
   final TextEditingController _hourController = TextEditingController();
   final TextEditingController _minuteController = TextEditingController();
   final TextEditingController _secondController = TextEditingController();
+  final Function changeListener;
 
-  _TimeInputState() {
-    addControllerListeners();
+  _TimeInputState({this.changeListener}) {
+    addControllerListeners(changeListener);
   }
 
-  void addControllerListeners() {
-    VoidCallback listener = () => {
-          //    runningTargetBloc.updateTime(RunningTime()
-          //   ..hour = int.tryParse(_hourController.text)
-          //   ..minute = int.tryParse(_minuteController.text)
-          //   ..seconds = int.tryParse(_secondController.text))
-        };
-    _hourController.addListener(listener);
-    _minuteController.addListener(listener);
-    _secondController.addListener(listener);
+  void addControllerListeners(Function changeAction) {
+    VoidCallback timeInputChangeListener = () {
+      changeAction.call("${_hourController.text}", "${_minuteController.text}",
+          "${_secondController.text}");
+    };
+    _hourController.addListener(timeInputChangeListener);
+    _minuteController.addListener(timeInputChangeListener);
+    _secondController.addListener(timeInputChangeListener);
   }
 
   List<Widget> getInputFields() {
-    String _hintText = "";
     return <Widget>[
-      createInputField(
-        "Hours",
-        _hintText,
-        _hourController,
+      Expanded(
+        flex: 1,
+        child: NumberInputField(
+          "Hours",
+          controller: _hourController,
+          validator: Validators().getNumberRangeValidator(0, 200),
+        ),
       ),
-      createInputField(
-        "Minutes",
-        _hintText,
-        _minuteController,
+      Expanded(
+        flex: 1,
+        child: NumberInputField(
+          "Minutes",
+          controller: _minuteController,
+          validator: Validators().getNumberRangeValidator(0, 60),
+        ),
       ),
-      createInputField(
-        "Seconds",
-        _hintText,
-        _secondController,
+      Expanded(
+        flex: 1,
+        child: NumberInputField(
+          "Seconds",
+          controller: _secondController,
+          validator: Validators().getNumberRangeValidator(0, 60),
+        ),
       )
     ];
-  }
-
-  Expanded createInputField(title, hint, controller) {
-    return Expanded(
-      flex: 1,
-      child: NumberInputField(
-        "Seconds",
-        hintText: hint,
-        controller: controller,
-      ),
-    );
   }
 
   void updateComponent(RunningTime runningTime) {
