@@ -26,8 +26,8 @@ class _TimeInputState extends State<TimeInput> {
 
   void addControllerListeners(Function changeAction) {
     VoidCallback timeInputChangeListener = () {
-      changeAction.call("${_hourController.text}", "${_minuteController.text}",
-          "${_secondController.text}");
+      changeAction.call(
+          _hourController.text, _minuteController.text, _secondController.text);
     };
     _hourController.addListener(timeInputChangeListener);
     _minuteController.addListener(timeInputChangeListener);

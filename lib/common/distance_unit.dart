@@ -11,4 +11,18 @@ extension DistanceUnitClear on DistanceUnit {
         return null;
     }
   }
+
+  String toShortString() {
+    return this.toString().split('.').last;
+  }
+}
+
+class DistanceUnitHelper {
+  static DistanceUnit valueOf(String value) {
+    for (DistanceUnit distanceUnit in DistanceUnit.values) {
+      if (distanceUnit.toShortString() == value) return distanceUnit;
+    }
+
+    return null;
+  }
 }

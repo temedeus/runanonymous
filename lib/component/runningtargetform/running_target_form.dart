@@ -5,10 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runanonymous/bloc/running_target_bloc.dart';
 import 'package:runanonymous/bloc/running_time.dart';
 import 'package:runanonymous/bloc/running_time_event.dart';
-import 'package:runanonymous/common/distance_unit.dart';
 import 'package:runanonymous/common/route_mapping.dart';
 import 'package:runanonymous/common/speed_unit.dart';
-import 'package:runanonymous/component/common/number_input_field.dart';
+import 'package:runanonymous/component/runningtargetform/distance_field.dart';
 
 import '../common/form_dropdown_widget.dart';
 import '../common/main_menu_button.dart';
@@ -33,13 +32,14 @@ class RunningTargetFormState extends State<RunningTargetForm> {
     return BlocBuilder(
       cubit: BlocProvider.of<RunningTargetBloc>(context),
       builder: (BuildContext context, state) {
-        String targetSpeed = state.speed ?? "--";
-        String targetSpeedText = "Target speed: \n" + targetSpeed;
+        String targetSpeed =
+            state.speed != null ? state.speed.toStringAsFixed(1) : "--";
+        String targetSpeedText = "Target speed: \n" + targetSpeed.toString();
         return Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
-              _buildDistanceField(),
+              DistanceField(),
               TimeInput(
                   changeListener: (hours, minutes, seconds) => {
                         BlocProvider.of<RunningTargetBloc>(context)
@@ -48,7 +48,7 @@ class RunningTargetFormState extends State<RunningTargetForm> {
                               ..minute = int.tryParse(minutes)
                               ..seconds = int.tryParse(seconds)))
                       }),
-              _buildSpeedUnitField(),
+              _buildSpeedUnitField(BlocProvider.of<RunningTargetBloc>(context)),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
@@ -68,43 +68,14 @@ class RunningTargetFormState extends State<RunningTargetForm> {
     );
   }
 
-  Widget _buildDistanceField() {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: NumberInputField(
-                    "Distance",
-                    onSaved: (String value) {},
-                    hintText: "0",
-                  ),
-                )),
-            Expanded(
-                child: FormDropDownWidget(
-              labelText: "Unit",
-              items: [DistanceUnit.KM.unit, DistanceUnit.M.unit],
-              initialValue: DistanceUnit.KM.unit,
-            ))
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSpeedUnitField() {
+  Widget _buildSpeedUnitField(RunningTargetBloc bloc) {
     return FormDropDownWidget(
       labelText: "Unit",
-      items: [
-        SpeedUnit.KMH.unit,
-        SpeedUnit.MPH.unit,
-        SpeedUnit.MPK.unit,
-        SpeedUnit.MPM.unit
-      ],
+      items: SpeedUnitHelper.unitValues,
       initialValue: SpeedUnit.KMH.unit,
+      valueChanged: (String newValue) {
+        bloc.add(UpdateSpeedUnitEvent(SpeedUnitHelper.valueOf(newValue)));
+      },
     );
   }
 

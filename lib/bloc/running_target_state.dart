@@ -6,10 +6,10 @@ import 'package:runanonymous/common/speed_unit.dart';
 /// Model for running target specifications.
 @immutable
 class RunningTargetState {
-  final int distance;
+  final double distance;
   final DistanceUnit distanceUnit;
   final RunningTime time;
-  final int speed;
+  final double speed;
   final SpeedUnit speedUnit;
 
   RunningTargetState({

@@ -28,13 +28,26 @@ class RunningTargetBloc
     speed,
     speedUnit,
   }) {
+    var newDistance = distance ?? oldState.distance;
+    RunningTime newTime = time ?? oldState.time;
+    double newSpeed = (newDistance != null && !newTime.empty)
+        ? calculateNewSpeed(double.tryParse(newDistance), newTime)
+        : speed ?? oldState.speed;
     return RunningTargetState(
-      distance: distance ?? oldState.distance,
+      distance: double.tryParse(newDistance),
       distanceUnit: distanceUnit ?? oldState.distanceUnit,
-      time: time ?? oldState.time,
-      speed: speed ?? oldState.speed,
+      time: newTime,
+      speed: newSpeed,
       speedUnit: speedUnit ?? oldState.speedUnit,
     );
+  }
+
+  double calculateNewSpeed(double distance, RunningTime time) {
+    int hour = time.hour ?? 0;
+    int minute = time.hour ?? 0;
+    int second = time.seconds ?? 0;
+    double minutesTime = (hour * 60 + minute + second / 60);
+    return (minutesTime > 0) ? distance / minutesTime : 0;
   }
 
   @override

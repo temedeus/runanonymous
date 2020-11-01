@@ -6,24 +6,28 @@ class FormDropDownWidget extends StatefulWidget {
       {Key key,
       @required this.labelText,
       @required this.items,
-      this.initialValue})
+      this.initialValue,
+      this.valueChanged})
       : super(key: key);
 
   final String labelText;
   final List<String> items;
   final String initialValue;
+  final ValueChanged<String> valueChanged;
 
   @override
   _FormDropDownWidgetState createState() =>
-      _FormDropDownWidgetState(labelText, items, initialValue: initialValue);
+      _FormDropDownWidgetState(labelText, items,
+          initialValue: initialValue, valueChanged: valueChanged);
 }
 
 class _FormDropDownWidgetState extends State<FormDropDownWidget> {
-  _FormDropDownWidgetState(this.labelText, this.items, {this.initialValue});
+  _FormDropDownWidgetState(this.labelText, this.items,
+      {this.initialValue, this.valueChanged});
   final String initialValue;
   final String labelText;
   final List<String> items;
-  String dropdownValue;
+  final ValueChanged<String> valueChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +37,7 @@ class _FormDropDownWidgetState extends State<FormDropDownWidget> {
       icon: Icon(Icons.arrow_downward),
       iconSize: 24,
       elevation: 16,
-      onChanged: (String newValue) {
-        setState(() {
-          dropdownValue = newValue;
-        });
-      },
+      onChanged: valueChanged,
       items: items.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
