@@ -20,7 +20,7 @@ class _DistanceFieldState extends State<DistanceField> {
   Widget build(BuildContext context) {
     controller.addListener(() {
       BlocProvider.of<RunningTargetBloc>(context)
-          .add(UpdateDistanceEvent(controller.text));
+          .add(UpdateDistanceEvent(double.tryParse(controller.text)));
     });
     return Column(
       children: <Widget>[

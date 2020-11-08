@@ -11,10 +11,10 @@ import 'package:runanonymous/common/speed_unit.dart';
 class RunningTargetBloc
     extends Bloc<AbstractRunningTimeEvent, RunningTargetState> {
   static final RunningTargetState _initialState = RunningTargetState(
-    distance: null,
+    distance: 0,
     time: new RunningTime(),
     distanceUnit: DistanceUnit.KM,
-    speed: null,
+    speed: 0,
     speedUnit: SpeedUnit.KMH,
   );
 
@@ -28,13 +28,13 @@ class RunningTargetBloc
     speed,
     speedUnit,
   }) {
-    var newDistance = distance ?? oldState.distance;
+    double newDistance = distance ?? oldState.distance;
     RunningTime newTime = time ?? oldState.time;
     double newSpeed = (newDistance != null && !newTime.empty)
-        ? calculateNewSpeed(double.tryParse(newDistance), newTime)
+        ? calculateNewSpeed(newDistance, newTime)
         : speed ?? oldState.speed;
     return RunningTargetState(
-      distance: double.tryParse(newDistance),
+      distance: newDistance,
       distanceUnit: distanceUnit ?? oldState.distanceUnit,
       time: newTime,
       speed: newSpeed,
@@ -42,12 +42,13 @@ class RunningTargetBloc
     );
   }
 
+  /// Speed in unit{km|m}/hour.
   double calculateNewSpeed(double distance, RunningTime time) {
     int hour = time.hour ?? 0;
-    int minute = time.hour ?? 0;
+    int minute = time.minute ?? 0;
     int second = time.seconds ?? 0;
-    double minutesTime = (hour * 60 + minute + second / 60);
-    return (minutesTime > 0) ? distance / minutesTime : 0;
+    double hourTime = (hour + minute / 60 + second / 3600);
+    return (hourTime > 0) ? distance / hourTime : 0;
   }
 
   @override

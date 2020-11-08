@@ -48,7 +48,7 @@ class RunningTargetFormState extends State<RunningTargetForm> {
                               ..minute = int.tryParse(minutes)
                               ..seconds = int.tryParse(seconds)))
                       }),
-              _buildSpeedUnitField(BlocProvider.of<RunningTargetBloc>(context)),
+              //_buildSpeedUnitField(BlocProvider.of<RunningTargetBloc>(context)),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(

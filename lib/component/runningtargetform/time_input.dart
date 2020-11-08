@@ -32,6 +32,9 @@ class _TimeInputState extends State<TimeInput> {
     _hourController.addListener(timeInputChangeListener);
     _minuteController.addListener(timeInputChangeListener);
     _secondController.addListener(timeInputChangeListener);
+    _hourController.text = "0";
+    _minuteController.text = "0";
+    _secondController.text = "0";
   }
 
   List<Widget> getInputFields() {
