@@ -6,10 +6,8 @@ import 'package:runanonymous/bloc/running_target_bloc.dart';
 import 'package:runanonymous/bloc/running_time.dart';
 import 'package:runanonymous/bloc/running_time_event.dart';
 import 'package:runanonymous/common/route_mapping.dart';
-import 'package:runanonymous/common/speed_unit.dart';
 import 'package:runanonymous/component/runningtargetform/distance_field.dart';
 
-import '../common/form_dropdown_widget.dart';
 import '../common/main_menu_button.dart';
 import 'time_input.dart';
 
@@ -64,17 +62,6 @@ class RunningTargetFormState extends State<RunningTargetForm> {
             ],
           ),
         );
-      },
-    );
-  }
-
-  Widget _buildSpeedUnitField(RunningTargetBloc bloc) {
-    return FormDropDownWidget(
-      labelText: "Unit",
-      items: SpeedUnitHelper.unitValues,
-      initialValue: SpeedUnit.KMH.unit,
-      valueChanged: (String newValue) {
-        bloc.add(UpdateSpeedUnitEvent(SpeedUnitHelper.valueOf(newValue)));
       },
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:runanonymous/component/common/form_item.dart';
 
 /// Stateful (dropdown value) form dropdown widget.
 class FormDropDownWidget extends StatefulWidget {
@@ -11,7 +12,7 @@ class FormDropDownWidget extends StatefulWidget {
       : super(key: key);
 
   final String labelText;
-  final List<String> items;
+  final List<FormItem> items;
   final String initialValue;
   final ValueChanged<String> valueChanged;
 
@@ -21,12 +22,12 @@ class FormDropDownWidget extends StatefulWidget {
           initialValue: initialValue, valueChanged: valueChanged);
 }
 
-class _FormDropDownWidgetState extends State<FormDropDownWidget> {
+class _FormDropDownWidgetState<T> extends State<FormDropDownWidget> {
   _FormDropDownWidgetState(this.labelText, this.items,
       {this.initialValue, this.valueChanged});
   final String initialValue;
   final String labelText;
-  final List<String> items;
+  final List<FormItem> items;
   final ValueChanged<String> valueChanged;
 
   @override
@@ -38,10 +39,10 @@ class _FormDropDownWidgetState extends State<FormDropDownWidget> {
       iconSize: 24,
       elevation: 16,
       onChanged: valueChanged,
-      items: items.map<DropdownMenuItem<String>>((String value) {
+      items: items.map<DropdownMenuItem<String>>((FormItem formItem) {
         return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
+          value: formItem.value,
+          child: Text(formItem.displayValue),
         );
       }).toList(),
     );

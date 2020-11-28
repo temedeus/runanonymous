@@ -4,6 +4,7 @@ import 'package:runanonymous/bloc/running_target_bloc.dart';
 import 'package:runanonymous/bloc/running_time_event.dart';
 import 'package:runanonymous/common/distance_unit.dart';
 import 'package:runanonymous/component/common/form_dropdown_widget.dart';
+import 'package:runanonymous/component/common/form_item.dart';
 import 'package:runanonymous/component/common/number_input_field.dart';
 
 class DistanceField extends StatefulWidget {
@@ -40,7 +41,14 @@ class _DistanceFieldState extends State<DistanceField> {
             Expanded(
                 child: FormDropDownWidget(
               labelText: "Unit",
-              items: [DistanceUnit.KM.unit, DistanceUnit.M.unit],
+              items: [
+                FormItem()
+                  ..value = DistanceUnit.KM.unit
+                  ..displayValue = DistanceUnit.KM.unit,
+                FormItem()
+                  ..value = DistanceUnit.M.unit
+                  ..displayValue = DistanceUnit.M.unit
+              ],
               initialValue: DistanceUnit.KM.unit,
               valueChanged: (newValue) {
                 BlocProvider.of<RunningTargetBloc>(context).add(

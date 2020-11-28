@@ -5,13 +5,13 @@ extension SpeedUnitClear on SpeedUnit {
   String get unit {
     switch (this) {
       case SpeedUnit.KMH:
-        return "Kilometers per hour";
+        return "kmh";
       case SpeedUnit.MPH:
-        return "Milers per hour";
+        return "mph";
       case SpeedUnit.MPM:
-        return "Minutes per mile";
+        return "mpm";
       case SpeedUnit.MPK:
-        return "Minutes per kilometer";
+        return "mpk";
       default:
         return null;
     }
@@ -25,7 +25,7 @@ extension SpeedUnitClear on SpeedUnit {
 class SpeedUnitHelper {
   static SpeedUnit valueOf(String value) {
     for (SpeedUnit speedUnit in SpeedUnit.values) {
-      if (speedUnit.toShortString() == value) return speedUnit;
+      if (speedUnit.unit == value) return speedUnit;
     }
 
     return null;

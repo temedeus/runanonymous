@@ -4,9 +4,9 @@ extension DistanceUnitClear on DistanceUnit {
   String get unit {
     switch (this) {
       case DistanceUnit.KM:
-        return "Km";
+        return "km";
       case DistanceUnit.M:
-        return "Miles";
+        return "miles";
       default:
         return null;
     }
@@ -20,7 +20,7 @@ extension DistanceUnitClear on DistanceUnit {
 class DistanceUnitHelper {
   static DistanceUnit valueOf(String value) {
     for (DistanceUnit distanceUnit in DistanceUnit.values) {
-      if (distanceUnit.toShortString() == value) return distanceUnit;
+      if (distanceUnit.unit == value) return distanceUnit;
     }
 
     return null;
