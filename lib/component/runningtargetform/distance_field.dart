@@ -51,9 +51,12 @@ class _DistanceFieldState extends State<DistanceField> {
               ],
               initialValue: DistanceUnit.KM.unit,
               valueChanged: (newValue) {
-                BlocProvider.of<RunningTargetBloc>(context).add(
-                    UpdateDistanceUnitEvent(
-                        DistanceUnitHelper.valueOf(newValue)));
+                DistanceUnit distanceUnit =
+                    DistanceUnitHelper.valueOf(newValue);
+                BlocProvider.of<RunningTargetBloc>(context)
+                    .add(UpdateDistanceUnitEvent(distanceUnit));
+                BlocProvider.of<RunningTargetBloc>(context)
+                    .add(UpdateSpeedUnitEvent(distanceUnit.matchingSpeedUnit));
               },
             ))
           ],

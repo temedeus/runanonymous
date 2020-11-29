@@ -56,7 +56,7 @@ class RunningTargetFormState extends State<RunningTargetForm> {
                   )),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: MainMenuButton("Start", () {
+                  child: MenuButton("Start", () {
                     formSubmitAction();
                   })),
             ],

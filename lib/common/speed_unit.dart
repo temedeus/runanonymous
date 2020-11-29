@@ -1,4 +1,4 @@
-enum SpeedUnit { KMH, MPH, MPM, MPK }
+enum SpeedUnit { KMH, MPH }
 
 // TODO: return localization key
 extension SpeedUnitClear on SpeedUnit {
@@ -8,10 +8,6 @@ extension SpeedUnitClear on SpeedUnit {
         return "kmh";
       case SpeedUnit.MPH:
         return "mph";
-      case SpeedUnit.MPM:
-        return "mpm";
-      case SpeedUnit.MPK:
-        return "mpk";
       default:
         return null;
     }
@@ -29,14 +25,5 @@ class SpeedUnitHelper {
     }
 
     return null;
-  }
-
-  static get unitValues {
-    List<String> items = [];
-    for (SpeedUnit speedUnit in SpeedUnit.values) {
-      items.add(speedUnit.unit);
-    }
-
-    return items;
   }
 }

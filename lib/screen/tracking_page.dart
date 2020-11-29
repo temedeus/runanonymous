@@ -20,7 +20,7 @@ class TrackingPage extends StatelessWidget {
           String targetSpeedText = "Target speed: " +
               targetSpeed.toString() +
               " " +
-              speedUnitClear.toShortString();
+              speedUnitClear.unit;
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -34,8 +34,8 @@ class TrackingPage extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                 ),
               ),
-              Speedometer(state.speed, state.distanceUnit),
-              MainMenuButton("Stop Session", () => Navigator.pop(context)),
+              Speedometer(state.speed, state.speedUnit),
+              MenuButton("Stop Session", () => Navigator.pop(context)),
             ],
           );
         });

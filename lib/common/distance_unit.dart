@@ -1,3 +1,5 @@
+import 'package:runanonymous/common/speed_unit.dart';
+
 enum DistanceUnit { KM, M }
 
 extension DistanceUnitClear on DistanceUnit {
@@ -7,6 +9,17 @@ extension DistanceUnitClear on DistanceUnit {
         return "km";
       case DistanceUnit.M:
         return "miles";
+      default:
+        return null;
+    }
+  }
+
+  SpeedUnit get matchingSpeedUnit {
+    switch (this) {
+      case DistanceUnit.KM:
+        return SpeedUnit.KMH;
+      case DistanceUnit.M:
+        return SpeedUnit.MPH;
       default:
         return null;
     }
