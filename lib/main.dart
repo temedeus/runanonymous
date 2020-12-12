@@ -48,7 +48,7 @@ class _AppTemplate extends StatelessWidget {
               image: DecorationImage(
                 colorFilter: new ColorFilter.mode(
                     Colors.black.withOpacity(0.1), BlendMode.dstATop),
-                image: AssetImage("images/forest_bg.jpg"),
+                image: AssetImage("assets/images/forest_bg.jpg"),
                 fit: BoxFit.cover,
               ),
             ),

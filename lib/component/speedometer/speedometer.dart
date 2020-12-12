@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:runanonymous/common/speed_status.dart';
 import 'package:runanonymous/common/speed_unit.dart';
 import 'package:runanonymous/component/speedometer/speed_text.dart';
+import 'package:screen/screen.dart';
 
 class Speedometer extends StatefulWidget {
   final double targetSpeed;
@@ -22,19 +22,24 @@ class _SpeedometerState extends State<Speedometer> {
   _SpeedometerState(this.targetSpeed, this.speedUnit);
 
   final SpeedUnit speedUnit;
+  final double targetSpeed;
+
   Location _location;
   LocationData _currentLocation;
   PermissionStatus _permissionGranted;
   Timer _timer;
   StreamSubscription<LocationData> _locationSubscription;
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
-  final double targetSpeed;
+  AudioCache _audioCache = AudioCache();
 
   static const double MS_TO_MPH_CONVERSION_RATE = 2.236936;
   static const double MS_TO_KMH_CONVERSION_RATE = 3.6;
-  static const double LOWER_THRESHOLD = 0.5;
-  static const double UPPER_THRESHOLD = 1.5;
+  static const double LOWER_THRESHOLD = 0.9;
+  static const double UPPER_THRESHOLD = 1.1;
   static const double _MINIMUM_SPEED_TO_TRACK = 0.5;
+
+  static String tooSlow = "sounds/too_slow_whip.wav";
+  static String tooFast = "sounds/too_fast_clink.wav";
 
   double get _conversionRate {
     switch (speedUnit) {
@@ -52,6 +57,7 @@ class _SpeedometerState extends State<Speedometer> {
     super.initState();
     _ensureLocationAvailable();
     _initTimer();
+    Screen.keepOn(true);
   }
 
   @override
@@ -63,28 +69,33 @@ class _SpeedometerState extends State<Speedometer> {
   }
 
   void _initTimer() {
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      if (_currentLocation != null &&
-          _currentLocation.speed > _MINIMUM_SPEED_TO_TRACK) {
-        _speedStatus = SpeedStatus.ON_TIME;
+    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
+      if (_currentLocation != null) {
+        double convertedCurrentSpeed =
+            _currentLocation.speed * _conversionRate ?? 0;
+        if (convertedCurrentSpeed > _MINIMUM_SPEED_TO_TRACK) {
+          _speedStatus = SpeedStatus.ON_TIME;
 
-        if (_currentLocation.speed * _conversionRate <
-            targetSpeed * LOWER_THRESHOLD) {
-          HapticFeedback.heavyImpact();
-          _speedStatus = SpeedStatus.SLOW;
-          debugPrint(
-              "You're running too slow! Current: {$_currentLocation.speed} target: $targetSpeed");
-        }
+          if (convertedCurrentSpeed < targetSpeed * LOWER_THRESHOLD) {
+            _speedStatus = SpeedStatus.SLOW;
+            _playLocalSound(tooSlow);
+            debugPrint(
+                "You're running too slow! Current: $convertedCurrentSpeed target: $targetSpeed");
+          }
 
-        if (_currentLocation.speed * _conversionRate >
-            targetSpeed * UPPER_THRESHOLD) {
-          _patternVibrate();
-          _speedStatus = SpeedStatus.FAST;
-          debugPrint(
-              "You're running too fast!: ${_currentLocation.speed} target: $targetSpeed");
+          if (convertedCurrentSpeed > targetSpeed * UPPER_THRESHOLD) {
+            _speedStatus = SpeedStatus.FAST;
+            _playLocalSound(tooFast);
+            debugPrint(
+                "You're running too fast!: $convertedCurrentSpeed target: $targetSpeed");
+          }
         }
       }
     });
+  }
+
+  _playLocalSound(sound) async {
+    await _audioCache.play(sound);
   }
 
   void _ensureLocationAvailable() async {
@@ -117,15 +128,8 @@ class _SpeedometerState extends State<Speedometer> {
   void dispose() {
     _timer.cancel();
     _locationSubscription.cancel();
+    Screen.keepOn(false);
+    _audioCache.clearCache();
     super.dispose();
-  }
-
-  _patternVibrate() {
-    const SLEEP_DURATION = Duration(milliseconds: 200);
-    HapticFeedback.mediumImpact();
-    sleep(SLEEP_DURATION);
-    HapticFeedback.mediumImpact();
-    sleep(SLEEP_DURATION);
-    HapticFeedback.mediumImpact();
   }
 }
