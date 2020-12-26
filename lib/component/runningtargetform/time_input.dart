@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'package:runanonymous/bloc/running_time.dart';
 import 'package:runanonymous/validator/validators.dart';
 
@@ -37,30 +39,56 @@ class _TimeInputState extends State<TimeInput> {
     _secondController.text = "0";
   }
 
+  void _showDialog(controller, hourLocale) {
+    showDialog<int>(
+        context: context,
+        builder: (BuildContext context) {
+          return new NumberPickerDialog.integer(
+            minValue: 0,
+            maxValue: 60,
+            title: new Text(hourLocale),
+            initialIntegerValue: controller.text,
+          );
+        }).then((value) => {
+          if (value != null) {controller.text = value.toString()}
+        });
+  }
+
   List<Widget> getInputFields() {
     return <Widget>[
       Expanded(
         flex: 1,
-        child: NumberInputField(
-          "Hours",
-          controller: _hourController,
-          validator: Validators().getNumberRangeValidator(0, 200),
+        child: InkWell(
+          onTap: () => _showDialog(_hourController, "Hours"),
+          child: NumberInputField(
+            "Hours",
+            controller: _hourController,
+            validator: Validators().getNumberRangeValidator(0, 200),
+            enabled: false,
+          ),
         ),
       ),
       Expanded(
-        flex: 1,
-        child: NumberInputField(
-          "Minutes",
-          controller: _minuteController,
-          validator: Validators().getNumberRangeValidator(0, 60),
-        ),
-      ),
+          flex: 1,
+          child: InkWell(
+            onTap: () => _showDialog(_minuteController, "Minutes"),
+            child: NumberInputField(
+              "Minutes",
+              controller: _minuteController,
+              validator: Validators().getNumberRangeValidator(0, 60),
+              enabled: false,
+            ),
+          )),
       Expanded(
         flex: 1,
-        child: NumberInputField(
-          "Seconds",
-          controller: _secondController,
-          validator: Validators().getNumberRangeValidator(0, 60),
+        child: InkWell(
+          onTap: () => _showDialog(_secondController, "Seconds"),
+          child: NumberInputField(
+            "Seconds",
+            controller: _secondController,
+            validator: Validators().getNumberRangeValidator(0, 60),
+            enabled: false,
+          ),
         ),
       )
     ];

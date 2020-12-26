@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:runanonymous/bloc/running_target_bloc.dart';
 import 'package:runanonymous/common/route_mapping.dart';
+import 'package:runanonymous/generated/l10n.dart';
 import 'package:runanonymous/screen/main_app.dart';
 import 'package:runanonymous/screen/tracking_page.dart';
 
@@ -21,6 +23,12 @@ class RunanonymousApp extends StatelessWidget {
             primaryTextTheme:
                 TextTheme(headline6: TextStyle(color: Colors.white))),
         initialRoute: INITIAL_ROUTE.path,
+        localizationsDelegates: [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
         routes: {
           RouteMapping.HOME.path: (context) => _AppTemplate(MainPage()),
           RouteMapping.TRACKING.path: (context) => _AppTemplate(TrackingPage())
@@ -39,7 +47,7 @@ class _AppTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Runonymous'),
+          title: Text(S.of(context).topbarTitle),
           backgroundColor: Colors.green[900],
         ),
         body: Container(
