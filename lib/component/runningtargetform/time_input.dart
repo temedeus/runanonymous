@@ -47,7 +47,7 @@ class _TimeInputState extends State<TimeInput> {
             minValue: 0,
             maxValue: 60,
             title: new Text(hourLocale),
-            initialIntegerValue: controller.text,
+            initialIntegerValue: int.tryParse(controller.text),
           );
         }).then((value) => {
           if (value != null) {controller.text = value.toString()}
