@@ -12,7 +12,7 @@ class RunningTargetBloc
     extends Bloc<AbstractRunningTimeEvent, RunningTargetState> {
   static final RunningTargetState _initialState = RunningTargetState(
     distance: 0,
-    time: new RunningTime(),
+    time: new RunningTime(0, 0, 0),
     distanceUnit: DistanceUnit.KM,
     speed: 0,
     speedUnit: SpeedUnit.KMH,

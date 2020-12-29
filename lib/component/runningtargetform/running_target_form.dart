@@ -7,6 +7,7 @@ import 'package:runanonymous/bloc/running_time.dart';
 import 'package:runanonymous/bloc/running_time_event.dart';
 import 'package:runanonymous/common/route_mapping.dart';
 import 'package:runanonymous/component/runningtargetform/distance_field.dart';
+import 'package:runanonymous/generated/l10n.dart';
 
 import '../common/main_menu_button.dart';
 import 'time_input.dart';
@@ -32,7 +33,9 @@ class RunningTargetFormState extends State<RunningTargetForm> {
       builder: (BuildContext context, state) {
         String targetSpeed =
             state.speed != null ? state.speed.toStringAsFixed(1) : "--";
-        String targetSpeedText = "Target speed: \n" + targetSpeed.toString();
+        String targetSpeedText =
+            S.of(context).runningTargetFormTargetSpeedText +
+                targetSpeed.toString();
         return Form(
           key: _formKey,
           child: Column(
@@ -40,11 +43,11 @@ class RunningTargetFormState extends State<RunningTargetForm> {
               DistanceField(),
               TimeInput(
                   changeListener: (hours, minutes, seconds) => {
-                        BlocProvider.of<RunningTargetBloc>(context)
-                            .add(UpdateRunningTimeEvent(RunningTime()
-                              ..hour = int.tryParse(hours)
-                              ..minute = int.tryParse(minutes)
-                              ..seconds = int.tryParse(seconds)))
+                        BlocProvider.of<RunningTargetBloc>(context).add(
+                            UpdateRunningTimeEvent(RunningTime(
+                                int.tryParse(hours),
+                                int.tryParse(minutes),
+                                int.tryParse(seconds))))
                       }),
               //_buildSpeedUnitField(BlocProvider.of<RunningTargetBloc>(context)),
               Padding(
@@ -56,7 +59,8 @@ class RunningTargetFormState extends State<RunningTargetForm> {
                   )),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: MenuButton("Start", () {
+                  child: MenuButton(
+                      S.of(context).runningTargetFormStartButtonLabel, () {
                     formSubmitAction();
                   })),
             ],

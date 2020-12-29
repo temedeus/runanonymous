@@ -1,4 +1,6 @@
 {
   "@@locale": "en",
-  "topbarTitle": "Runonymous"
+  "topbarTitle": "Runonymous",
+  "runningTargetFormStartButtonLabel": "Start",
+  "runningTargetFormTargetSpeedText": "Target speed: \n"
 }
