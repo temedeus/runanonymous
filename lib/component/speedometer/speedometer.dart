@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:runanonymous/common/speed_status.dart';
 import 'package:runanonymous/common/speed_unit.dart';
+import 'package:runanonymous/component/common/app_retain_widget.dart';
 import 'package:runanonymous/component/speedometer/speed_text.dart';
-import 'package:screen/screen.dart';
 
 class Speedometer extends StatefulWidget {
   final double targetSpeed;
@@ -38,8 +39,10 @@ class _SpeedometerState extends State<Speedometer> {
   static const double UPPER_THRESHOLD = 1.1;
   static const double _MINIMUM_SPEED_TO_TRACK = 0.5;
 
-  static String tooSlow = "sounds/too_slow_whip.wav";
-  static String tooFast = "sounds/too_fast_clink.wav";
+  static const String SOUND_TOO_SLOW = "sounds/too_slow_whip.wav";
+  static const String SOUND_TOO_FAST = "sounds/too_fast_clink.wav";
+  static const _channel =
+      const MethodChannel('com.example.simplerunner/app_retain');
 
   double get _conversionRate {
     switch (speedUnit) {
@@ -57,15 +60,18 @@ class _SpeedometerState extends State<Speedometer> {
     super.initState();
     _ensureLocationAvailable();
     _initTimer();
-    Screen.keepOn(true);
+    //  Screen.keepOn(true);
+    _channel.invokeMethod('startService');
   }
 
   @override
   Widget build(BuildContext context) {
     return _currentLocation == null
         ? CircularProgressIndicator()
-        : SpeedText(
-            _currentLocation.speed * _conversionRate, _speedStatus, speedUnit);
+        : AppRetainWidget(
+            child: SpeedText(_currentLocation.speed * _conversionRate,
+                _speedStatus, speedUnit),
+          );
   }
 
   void _initTimer() {
@@ -73,19 +79,20 @@ class _SpeedometerState extends State<Speedometer> {
       if (_currentLocation != null) {
         double convertedCurrentSpeed =
             _currentLocation.speed * _conversionRate ?? 0;
+        debugPrint("Monitoring running speed...");
         if (convertedCurrentSpeed > _MINIMUM_SPEED_TO_TRACK) {
           _speedStatus = SpeedStatus.ON_TIME;
 
           if (convertedCurrentSpeed < targetSpeed * LOWER_THRESHOLD) {
             _speedStatus = SpeedStatus.SLOW;
-            _playLocalSound(tooSlow);
+            _playLocalSound(SOUND_TOO_SLOW);
             debugPrint(
                 "You're running too slow! Current: $convertedCurrentSpeed target: $targetSpeed");
           }
 
           if (convertedCurrentSpeed > targetSpeed * UPPER_THRESHOLD) {
             _speedStatus = SpeedStatus.FAST;
-            _playLocalSound(tooFast);
+            _playLocalSound(SOUND_TOO_FAST);
             debugPrint(
                 "You're running too fast!: $convertedCurrentSpeed target: $targetSpeed");
           }
@@ -128,8 +135,9 @@ class _SpeedometerState extends State<Speedometer> {
   void dispose() {
     _timer.cancel();
     _locationSubscription.cancel();
-    Screen.keepOn(false);
+    //   Screen.keepOn(false);
     _audioCache.clearCache();
+    _channel.invokeMethod('stopService');
     super.dispose();
   }
 }
