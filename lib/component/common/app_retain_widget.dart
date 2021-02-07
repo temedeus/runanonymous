@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:runanonymous/common/backend_method.dart';
 
 class AppRetainWidget extends StatelessWidget {
   const AppRetainWidget({Key key, this.child}) : super(key: key);
@@ -15,7 +16,7 @@ class AppRetainWidget extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         if (Platform.isAndroid) {
-          _channel.invokeMethod('sendToBackground');
+          _channel.invokeMethod(ServiceMethod.SEND_TO_FOREGROUND.method);
         }
         return false;
       },

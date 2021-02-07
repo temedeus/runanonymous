@@ -2,5 +2,9 @@
   "@@locale": "en",
   "topbarTitle": "Runonymous",
   "runningTargetFormStartButtonLabel": "Start",
-  "runningTargetFormTargetSpeedText": "Target speed: \n"
+  "runningTargetFormTargetSpeedText": "Target speed: \n",
+  "runningTargetFormDistancefieldUnit": "Unit",
+  "commonHours": "Hours",
+  "commonMinutes": "Minutes",
+  "commonSeconds": "Seconds"
 }

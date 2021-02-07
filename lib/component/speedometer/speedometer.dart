@@ -4,6 +4,8 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
+import 'package:runanonymous/common/backend_method.dart';
+import 'package:runanonymous/common/constants.dart';
 import 'package:runanonymous/common/speed_status.dart';
 import 'package:runanonymous/common/speed_unit.dart';
 import 'package:runanonymous/component/common/app_retain_widget.dart';
@@ -33,12 +35,6 @@ class _SpeedometerState extends State<Speedometer> {
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
   AudioCache _audioCache = AudioCache();
 
-  static const double MS_TO_MPH_CONVERSION_RATE = 2.236936;
-  static const double MS_TO_KMH_CONVERSION_RATE = 3.6;
-  static const double LOWER_THRESHOLD = 0.9;
-  static const double UPPER_THRESHOLD = 1.1;
-  static const double _MINIMUM_SPEED_TO_TRACK = 0.5;
-
   static const String SOUND_TOO_SLOW = "sounds/too_slow_whip.wav";
   static const String SOUND_TOO_FAST = "sounds/too_fast_clink.wav";
   static const _channel =
@@ -47,9 +43,9 @@ class _SpeedometerState extends State<Speedometer> {
   double get _conversionRate {
     switch (speedUnit) {
       case SpeedUnit.KMH:
-        return MS_TO_KMH_CONVERSION_RATE;
+        return Constants.MS_TO_KMH_CONVERSION_RATE;
       case SpeedUnit.MPH:
-        return MS_TO_MPH_CONVERSION_RATE;
+        return Constants.MS_TO_MPH_CONVERSION_RATE;
       default:
         return 1;
     }
@@ -60,8 +56,7 @@ class _SpeedometerState extends State<Speedometer> {
     super.initState();
     _ensureLocationAvailable();
     _initTimer();
-    //  Screen.keepOn(true);
-    _channel.invokeMethod('startService');
+    _channel.invokeMethod(ServiceMethod.START_SERVICE.method);
   }
 
   @override
@@ -69,28 +64,26 @@ class _SpeedometerState extends State<Speedometer> {
     return _currentLocation == null
         ? CircularProgressIndicator()
         : AppRetainWidget(
-            child: SpeedText(_currentLocation.speed * _conversionRate,
-                _speedStatus, speedUnit),
+            child: SpeedText(_convertedSpeed(), _speedStatus, speedUnit),
           );
   }
 
   void _initTimer() {
     _timer = Timer.periodic(Duration(seconds: 3), (timer) {
       if (_currentLocation != null) {
-        double convertedCurrentSpeed =
-            _currentLocation.speed * _conversionRate ?? 0;
+        double convertedCurrentSpeed = _convertedSpeed();
         debugPrint("Monitoring running speed...");
-        if (convertedCurrentSpeed > _MINIMUM_SPEED_TO_TRACK) {
+        if (convertedCurrentSpeed > Constants.MINIMUM_SPEED_TO_TRACK) {
           _speedStatus = SpeedStatus.ON_TIME;
 
-          if (convertedCurrentSpeed < targetSpeed * LOWER_THRESHOLD) {
+          if (convertedCurrentSpeed < targetSpeed * Constants.LOWER_THRESHOLD) {
             _speedStatus = SpeedStatus.SLOW;
             _playLocalSound(SOUND_TOO_SLOW);
             debugPrint(
                 "You're running too slow! Current: $convertedCurrentSpeed target: $targetSpeed");
           }
 
-          if (convertedCurrentSpeed > targetSpeed * UPPER_THRESHOLD) {
+          if (convertedCurrentSpeed > targetSpeed * Constants.UPPER_THRESHOLD) {
             _speedStatus = SpeedStatus.FAST;
             _playLocalSound(SOUND_TOO_FAST);
             debugPrint(
@@ -99,6 +92,10 @@ class _SpeedometerState extends State<Speedometer> {
         }
       }
     });
+  }
+
+  double _convertedSpeed() {
+    return _currentLocation.speed * _conversionRate ?? 0;
   }
 
   _playLocalSound(sound) async {
@@ -134,10 +131,10 @@ class _SpeedometerState extends State<Speedometer> {
   @override
   void dispose() {
     _timer.cancel();
-    _locationSubscription.cancel();
+    if (_locationSubscription != null) _locationSubscription.cancel();
     //   Screen.keepOn(false);
     _audioCache.clearCache();
-    _channel.invokeMethod('stopService');
+    _channel.invokeMethod(ServiceMethod.STOP_SERVICE.method);
     super.dispose();
   }
 }

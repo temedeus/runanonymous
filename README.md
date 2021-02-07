@@ -7,6 +7,7 @@ store any data whatsoever. Native geolocation is used to track user speed, but l
 stored or used for other purposes.
 
 ## Initiate localizations
+To generate localisations run:
 ```
 pub global run intl_utils:generate
 ```

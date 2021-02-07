@@ -2,6 +2,9 @@
   "@@locale": "fi",
   "topbarTitle": "Runonymous",
   "runningTargetFormStartButtonLabel": "Aloita",
-  "runningTargetFormTargetSpeedText": "Tavoitenopeus: \n"
-
+  "runningTargetFormTargetSpeedText": "Tavoitenopeus: \n",
+  "runningTargetFormDistancefieldUnit": "Yksikkö",
+  "commonHours": "Tunnit",
+  "commonMinutes": "Minuutit",
+  "commonSeconds": "Sekunnit"
 }

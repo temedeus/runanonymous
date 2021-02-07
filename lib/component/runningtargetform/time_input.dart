@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:runanonymous/bloc/running_time.dart';
+import 'package:runanonymous/generated/l10n.dart';
 import 'package:runanonymous/validator/validators.dart';
 
 import '../common/number_input_field.dart';
@@ -54,14 +55,14 @@ class _TimeInputState extends State<TimeInput> {
         });
   }
 
-  List<Widget> getInputFields() {
+  List<Widget> getInputFields(BuildContext context) {
     return <Widget>[
       Expanded(
         flex: 1,
         child: InkWell(
-          onTap: () => _showDialog(_hourController, "Hours"),
+          onTap: () => _showDialog(_hourController, S.of(context).commonHours),
           child: NumberInputField(
-            "Hours",
+            S.of(context).commonHours,
             controller: _hourController,
             validator: Validators().getNumberRangeValidator(0, 200),
             enabled: false,
@@ -71,9 +72,10 @@ class _TimeInputState extends State<TimeInput> {
       Expanded(
           flex: 1,
           child: InkWell(
-            onTap: () => _showDialog(_minuteController, "Minutes"),
+            onTap: () =>
+                _showDialog(_minuteController, S.of(context).commonMinutes),
             child: NumberInputField(
-              "Minutes",
+              S.of(context).commonMinutes,
               controller: _minuteController,
               validator: Validators().getNumberRangeValidator(0, 60),
               enabled: false,
@@ -82,9 +84,10 @@ class _TimeInputState extends State<TimeInput> {
       Expanded(
         flex: 1,
         child: InkWell(
-          onTap: () => _showDialog(_secondController, "Seconds"),
+          onTap: () =>
+              _showDialog(_secondController, S.of(context).commonSeconds),
           child: NumberInputField(
-            "Seconds",
+            S.of(context).commonSeconds,
             controller: _secondController,
             validator: Validators().getNumberRangeValidator(0, 60),
             enabled: false,
@@ -113,7 +116,7 @@ class _TimeInputState extends State<TimeInput> {
     return Column(
       children: <Widget>[
         Row(
-          children: getInputFields(),
+          children: getInputFields(context),
         ),
       ],
     );

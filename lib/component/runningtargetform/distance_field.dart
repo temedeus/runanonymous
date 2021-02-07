@@ -6,6 +6,7 @@ import 'package:runanonymous/common/distance_unit.dart';
 import 'package:runanonymous/component/common/form_dropdown_widget.dart';
 import 'package:runanonymous/component/common/form_item.dart';
 import 'package:runanonymous/component/common/number_input_field.dart';
+import 'package:runanonymous/generated/l10n.dart';
 
 class DistanceField extends StatefulWidget {
   DistanceField({Key key}) : super(key: key);
@@ -40,7 +41,7 @@ class _DistanceFieldState extends State<DistanceField> {
                 )),
             Expanded(
                 child: FormDropDownWidget(
-              labelText: "Unit",
+              labelText: S.of(context).runningTargetFormDistancefieldUnit,
               items: [
                 FormItem()
                   ..value = DistanceUnit.KM.unit
