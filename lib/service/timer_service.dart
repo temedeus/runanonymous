@@ -1,3 +1,10 @@
-import 'package:runanonymous/service/running_target_service.dart';
+import 'package:runanonymous/model/timer_interface.dart';
+import 'package:runanonymous/service/timer_service_interface.dart';
 
-class TimerService implements RunningTargetService {}
+class TimerService implements TimerServiceInterface {
+  @override
+  TimerInterface provideTimer() {
+    // TODO: implement provideTimer
+    throw UnimplementedError();
+  }
+}

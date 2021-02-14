@@ -12,4 +12,5 @@ To generate localisations run:
 pub global run intl_utils:generate
 ```
 I highly recommend installing following plugin for IntelliJ/Android Studio:
+
 https://plugins.jetbrains.com/plugin/13666-flutter-intl

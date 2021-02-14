@@ -6,8 +6,12 @@ import 'package:runanonymous/common/route_mapping.dart';
 import 'package:runanonymous/generated/l10n.dart';
 import 'package:runanonymous/screen/main_app.dart';
 import 'package:runanonymous/screen/tracking_page.dart';
+import 'package:runanonymous/service/service_locator.dart';
 
-void main() => runApp(RunanonymousApp());
+void main() {
+  setupServiceLocator();
+  runApp(RunanonymousApp());
+}
 
 class RunanonymousApp extends StatelessWidget {
   @override

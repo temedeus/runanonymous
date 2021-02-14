@@ -1,3 +1,3 @@
-import 'package:runanonymous/service/running_target_service.dart';
+import 'package:runanonymous/service/location_service_interface.dart';
 
-class LocationService implements RunningTargetService {}
+class LocationService implements LocationServiceInterface {}

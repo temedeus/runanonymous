@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:location/location.dart';
-import 'package:runanonymous/common/backend_method.dart';
 import 'package:runanonymous/common/constants.dart';
 import 'package:runanonymous/common/unit/speed_status.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/app_retain_widget.dart';
 import 'package:runanonymous/component/speedometer/speed_text.dart';
+import 'package:runanonymous/service/keepalive_service_interface.dart';
+import 'package:runanonymous/service/service_locator.dart';
 
 class Speedometer extends StatefulWidget {
   final double targetSpeed;
@@ -26,6 +26,8 @@ class _SpeedometerState extends State<Speedometer> {
 
   final SpeedUnit speedUnit;
   final double targetSpeed;
+  final KeepAliveServiceInterface keepAliveServiceInterface =
+      locator<KeepAliveServiceInterface>();
 
   Location _location;
   LocationData _currentLocation;
@@ -37,8 +39,6 @@ class _SpeedometerState extends State<Speedometer> {
 
   static const String SOUND_TOO_SLOW = "sounds/too_slow_whip.wav";
   static const String SOUND_TOO_FAST = "sounds/too_fast_clink.wav";
-  static const _channel =
-      const MethodChannel('com.example.simplerunner/app_retain');
 
   double get _conversionRate {
     switch (speedUnit) {
@@ -56,7 +56,7 @@ class _SpeedometerState extends State<Speedometer> {
     super.initState();
     _ensureLocationAvailable();
     _initTimer();
-    _channel.invokeMethod(ServiceMethod.START_SERVICE.method);
+    keepAliveServiceInterface.startService();
   }
 
   @override
@@ -134,7 +134,7 @@ class _SpeedometerState extends State<Speedometer> {
     if (_locationSubscription != null) _locationSubscription.cancel();
     //   Screen.keepOn(false);
     _audioCache.clearCache();
-    _channel.invokeMethod(ServiceMethod.STOP_SERVICE.method);
+    keepAliveServiceInterface.stopService();
     super.dispose();
   }
 }
