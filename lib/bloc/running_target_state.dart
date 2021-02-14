@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:runanonymous/bloc/running_time.dart';
-import 'package:runanonymous/common/distance_unit.dart';
-import 'package:runanonymous/common/speed_unit.dart';
+import 'package:runanonymous/common/unit/distance_unit.dart';
+import 'package:runanonymous/common/unit/speed_unit.dart';
 
 /// Model for running target specifications.
 @immutable

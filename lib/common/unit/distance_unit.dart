@@ -1,4 +1,4 @@
-import 'package:runanonymous/common/speed_unit.dart';
+import 'package:runanonymous/common/unit/speed_unit.dart';
 
 enum DistanceUnit { KM, M }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:runanonymous/common/speed_unit.dart';
+import 'package:runanonymous/common/unit/speed_unit.dart';
 
-import '../../common/speed_status.dart';
+import '../../common/unit/speed_status.dart';
 
 class SpeedText extends StatelessWidget {
   SpeedText(this.speed, this.speedStatus, this.speedUnit);

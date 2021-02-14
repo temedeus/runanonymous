@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runanonymous/bloc/running_target_bloc.dart';
-import 'package:runanonymous/common/speed_unit.dart';
+import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/speedometer/speedometer.dart';
 
 import '../component/common/main_menu_button.dart';

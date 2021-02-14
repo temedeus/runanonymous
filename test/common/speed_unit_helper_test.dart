@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:runanonymous/common/speed_unit.dart';
+import 'package:runanonymous/common/unit/speed_unit.dart';
 
 void main() {
   group("speed unit helper test", () {

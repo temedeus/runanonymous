@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:runanonymous/common/distance_unit.dart';
+
+import 'file:///C:/Users/teemu/AndroidStudioProjects/simple_runner/lib/common/unit/distance_unit.dart';
 
 void main() {
   group("distance unit helper test", () {

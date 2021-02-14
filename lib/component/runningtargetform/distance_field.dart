@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runanonymous/bloc/running_target_bloc.dart';
 import 'package:runanonymous/bloc/running_time_event.dart';
-import 'package:runanonymous/common/distance_unit.dart';
 import 'package:runanonymous/component/common/form_dropdown_widget.dart';
 import 'package:runanonymous/component/common/form_item.dart';
 import 'package:runanonymous/component/common/number_input_field.dart';
 import 'package:runanonymous/generated/l10n.dart';
+
+import 'file:///C:/Users/teemu/AndroidStudioProjects/simple_runner/lib/common/unit/distance_unit.dart';
 
 class DistanceField extends StatefulWidget {
   DistanceField({Key key}) : super(key: key);

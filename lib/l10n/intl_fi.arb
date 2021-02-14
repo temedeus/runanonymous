@@ -2,6 +2,7 @@
   "@@locale": "fi",
   "topbarTitle": "Runonymous",
   "runningTargetFormStartButtonLabel": "Aloita",
+  "runningTargetFormResetButtonLabel": "Nollaa",
   "runningTargetFormTargetSpeedText": "Tavoitenopeus: \n",
   "runningTargetFormDistancefieldUnit": "Yksikkö",
   "commonHours": "Tunnit",

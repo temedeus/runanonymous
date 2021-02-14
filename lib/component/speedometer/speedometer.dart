@@ -6,8 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:runanonymous/common/backend_method.dart';
 import 'package:runanonymous/common/constants.dart';
-import 'package:runanonymous/common/speed_status.dart';
-import 'package:runanonymous/common/speed_unit.dart';
+import 'package:runanonymous/common/unit/speed_status.dart';
+import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/app_retain_widget.dart';
 import 'package:runanonymous/component/speedometer/speed_text.dart';
 

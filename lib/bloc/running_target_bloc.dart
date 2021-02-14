@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runanonymous/bloc/running_target_state.dart';
 import 'package:runanonymous/bloc/running_time.dart';
 import 'package:runanonymous/bloc/running_time_event.dart';
-import 'package:runanonymous/common/distance_unit.dart';
-import 'package:runanonymous/common/speed_unit.dart';
+import 'package:runanonymous/common/unit/distance_unit.dart';
+import 'package:runanonymous/common/unit/speed_unit.dart';
 
 class RunningTargetBloc
     extends Bloc<AbstractRunningTimeEvent, RunningTargetState> {
@@ -19,6 +19,10 @@ class RunningTargetBloc
   );
 
   RunningTargetBloc() : super(_initialState);
+
+  RunningTargetState resetState() {
+    return _initialState;
+  }
 
   RunningTargetState fromOldSettingState(
     RunningTargetState oldState, {
@@ -65,6 +69,8 @@ class RunningTargetBloc
       yield fromOldSettingState(_state, speedUnit: event.payload);
     } else if (event is UpdateDistanceUnitEvent) {
       yield fromOldSettingState(_state, distanceUnit: event.payload);
+    } else if (event is ResetFormEvent) {
+      yield resetState();
     }
   }
 }

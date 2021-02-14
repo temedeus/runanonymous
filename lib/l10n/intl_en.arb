@@ -2,6 +2,7 @@
   "@@locale": "en",
   "topbarTitle": "Runonymous",
   "runningTargetFormStartButtonLabel": "Start",
+  "runningTargetFormResetButtonLabel": "Reset",
   "runningTargetFormTargetSpeedText": "Target speed: \n",
   "runningTargetFormDistancefieldUnit": "Unit",
   "commonHours": "Hours",

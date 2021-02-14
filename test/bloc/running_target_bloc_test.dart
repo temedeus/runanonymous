@@ -4,8 +4,8 @@ import 'package:runanonymous/bloc/running_target_bloc.dart';
 import 'package:runanonymous/bloc/running_target_state.dart';
 import 'package:runanonymous/bloc/running_time.dart';
 import 'package:runanonymous/bloc/running_time_event.dart';
-import 'package:runanonymous/common/distance_unit.dart';
-import 'package:runanonymous/common/speed_unit.dart';
+import 'package:runanonymous/common/unit/distance_unit.dart';
+import 'package:runanonymous/common/unit/speed_unit.dart';
 
 void main() {
   RunningTargetState _initialState = RunningTargetState(

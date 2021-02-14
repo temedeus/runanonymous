@@ -25,6 +25,14 @@ class RunningTargetForm extends StatefulWidget {
 
 class RunningTargetFormState extends State<RunningTargetForm> {
   final _formKey = GlobalKey<FormState>();
+  DistanceField _distanceField;
+  TimeInput _timeInput;
+
+  @override
+  void initState() {
+    _initiateFields();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,16 +48,8 @@ class RunningTargetFormState extends State<RunningTargetForm> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              DistanceField(),
-              TimeInput(
-                  changeListener: (hours, minutes, seconds) => {
-                        BlocProvider.of<RunningTargetBloc>(context).add(
-                            UpdateRunningTimeEvent(RunningTime(
-                                int.tryParse(hours),
-                                int.tryParse(minutes),
-                                int.tryParse(seconds))))
-                      }),
-              //_buildSpeedUnitField(BlocProvider.of<RunningTargetBloc>(context)),
+              _distanceField,
+              _timeInput,
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
@@ -61,7 +61,7 @@ class RunningTargetFormState extends State<RunningTargetForm> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: MenuButton(
                       S.of(context).runningTargetFormStartButtonLabel, () {
-                    formSubmitAction();
+                    _formSubmitAction();
                   })),
             ],
           ),
@@ -70,9 +70,27 @@ class RunningTargetFormState extends State<RunningTargetForm> {
     );
   }
 
-  void formSubmitAction() {
+  void _formSubmitAction() {
     if (_formKey.currentState.validate()) {
       Navigator.pushNamed(context, RouteMapping.TRACKING.path);
     }
+  }
+
+  _createDistanceField() {
+    return DistanceField();
+  }
+
+  _createTimeInput(context) {
+    return TimeInput(
+        changeListener: (hours, minutes, seconds) => {
+              BlocProvider.of<RunningTargetBloc>(context).add(
+                  UpdateRunningTimeEvent(RunningTime(int.tryParse(hours),
+                      int.tryParse(minutes), int.tryParse(seconds))))
+            });
+  }
+
+  _initiateFields() {
+    _distanceField = _createDistanceField();
+    _timeInput = _createTimeInput(context);
   }
 }
