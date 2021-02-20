@@ -1,5 +1,5 @@
-abstract class AudioServiceInterface {
-  void playSound();
+import 'package:runanonymous/model/audio_player_interface.dart';
 
-  void stopSound();
+abstract class AudioServiceInterface {
+  AudioPlayerInterface getAudioPlayer();
 }

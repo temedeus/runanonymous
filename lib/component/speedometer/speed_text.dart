@@ -12,7 +12,7 @@ class SpeedText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(_convertToKmh(speed),
+      child: Text(_convertToDisplayValue(speed),
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
       decoration: new BoxDecoration(
@@ -36,7 +36,7 @@ class SpeedText extends StatelessWidget {
     }
   }
 
-  String _convertToKmh(double speed) {
+  String _convertToDisplayValue(double speed) {
     String speedString =
         (speed > 0.5) ? speed.toStringAsFixed(1) + " " + speedUnit.unit : "--";
     return speedString;

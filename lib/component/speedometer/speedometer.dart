@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:runanonymous/common/constants.dart';
@@ -8,7 +7,9 @@ import 'package:runanonymous/common/unit/speed_status.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/app_retain_widget.dart';
 import 'package:runanonymous/component/speedometer/speed_text.dart';
+import 'package:runanonymous/model/audio_player_interface.dart';
 import 'package:runanonymous/service/app_retain_service_interface.dart';
+import 'package:runanonymous/service/audio_service_interface.dart';
 import 'package:runanonymous/service/service_locator.dart';
 
 class Speedometer extends StatefulWidget {
@@ -22,12 +23,12 @@ class Speedometer extends StatefulWidget {
 }
 
 class _SpeedometerState extends State<Speedometer> {
-  _SpeedometerState(this.targetSpeed, this.speedUnit);
-
   final SpeedUnit speedUnit;
   final double targetSpeed;
-  final AppRetainServiceInterface appRetainServiceInterface =
+
+  final AppRetainServiceInterface _appRetainServiceInterface =
       locator<AppRetainServiceInterface>();
+  final AudioServiceInterface _audioService = locator<AudioServiceInterface>();
 
   Location _location;
   LocationData _currentLocation;
@@ -35,10 +36,14 @@ class _SpeedometerState extends State<Speedometer> {
   Timer _timer;
   StreamSubscription<LocationData> _locationSubscription;
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
-  AudioCache _audioCache = AudioCache();
+  AudioPlayerInterface _audioPlayerFacade;
 
   static const String SOUND_TOO_SLOW = "sounds/faster.wav";
   static const String SOUND_TOO_FAST = "sounds/slowdown.wav";
+
+  _SpeedometerState(this.targetSpeed, this.speedUnit) {
+    _audioPlayerFacade = _audioService.getAudioPlayer();
+  }
 
   double get _conversionRate {
     switch (speedUnit) {
@@ -56,7 +61,7 @@ class _SpeedometerState extends State<Speedometer> {
     super.initState();
     _ensureLocationAvailable();
     _initTimer();
-    appRetainServiceInterface.startService();
+    _appRetainServiceInterface.startService();
   }
 
   @override
@@ -99,7 +104,7 @@ class _SpeedometerState extends State<Speedometer> {
   }
 
   _playLocalSound(sound) async {
-    await _audioCache.play(sound);
+    await _audioPlayerFacade.playSound(sound);
   }
 
   void _ensureLocationAvailable() async {
@@ -133,8 +138,8 @@ class _SpeedometerState extends State<Speedometer> {
     _timer.cancel();
     if (_locationSubscription != null) _locationSubscription.cancel();
     //   Screen.keepOn(false);
-    _audioCache.clearCache();
-    appRetainServiceInterface.stopService();
+    _audioPlayerFacade.clear();
+    _appRetainServiceInterface.stopService();
     super.dispose();
   }
 }
