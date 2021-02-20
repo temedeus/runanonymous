@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
-import 'package:runanonymous/service/keepalive_service_interface.dart';
+import 'package:runanonymous/service/app_retain_service_interface.dart';
 
-class KeepAliveService implements KeepAliveServiceInterface {
+class AppRetainService implements AppRetainServiceInterface {
   static const _channel =
       const MethodChannel('com.example.simplerunner/app_retain');
 

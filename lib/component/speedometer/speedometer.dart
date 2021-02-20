@@ -8,7 +8,7 @@ import 'package:runanonymous/common/unit/speed_status.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/app_retain_widget.dart';
 import 'package:runanonymous/component/speedometer/speed_text.dart';
-import 'package:runanonymous/service/keepalive_service_interface.dart';
+import 'package:runanonymous/service/app_retain_service_interface.dart';
 import 'package:runanonymous/service/service_locator.dart';
 
 class Speedometer extends StatefulWidget {
@@ -26,8 +26,8 @@ class _SpeedometerState extends State<Speedometer> {
 
   final SpeedUnit speedUnit;
   final double targetSpeed;
-  final KeepAliveServiceInterface keepAliveServiceInterface =
-      locator<KeepAliveServiceInterface>();
+  final AppRetainServiceInterface appRetainServiceInterface =
+      locator<AppRetainServiceInterface>();
 
   Location _location;
   LocationData _currentLocation;
@@ -37,8 +37,8 @@ class _SpeedometerState extends State<Speedometer> {
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
   AudioCache _audioCache = AudioCache();
 
-  static const String SOUND_TOO_SLOW = "sounds/too_slow_whip.wav";
-  static const String SOUND_TOO_FAST = "sounds/too_fast_clink.wav";
+  static const String SOUND_TOO_SLOW = "sounds/faster.wav";
+  static const String SOUND_TOO_FAST = "sounds/slowdown.wav";
 
   double get _conversionRate {
     switch (speedUnit) {
@@ -56,7 +56,7 @@ class _SpeedometerState extends State<Speedometer> {
     super.initState();
     _ensureLocationAvailable();
     _initTimer();
-    keepAliveServiceInterface.startService();
+    appRetainServiceInterface.startService();
   }
 
   @override
@@ -134,7 +134,7 @@ class _SpeedometerState extends State<Speedometer> {
     if (_locationSubscription != null) _locationSubscription.cancel();
     //   Screen.keepOn(false);
     _audioCache.clearCache();
-    keepAliveServiceInterface.stopService();
+    appRetainServiceInterface.stopService();
     super.dispose();
   }
 }

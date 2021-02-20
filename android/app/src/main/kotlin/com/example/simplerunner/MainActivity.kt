@@ -17,6 +17,11 @@ class MainActivity : FlutterActivity() {
         runningPerformanceBackgroundServiceIntent =  Intent(this, RunningPerformanceBackgroundService::class.java)
     }
 
+    override fun onDestroy() {
+        stopService(runningPerformanceBackgroundServiceIntent)
+        super.onDestroy()
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)

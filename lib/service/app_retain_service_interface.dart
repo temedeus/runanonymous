@@ -1,4 +1,4 @@
-abstract class KeepAliveServiceInterface {
+abstract class AppRetainServiceInterface {
   void startService();
 
   void stopService();
