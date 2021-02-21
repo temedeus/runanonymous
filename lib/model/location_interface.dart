@@ -1,1 +1,1 @@
-abstract class Location {}
+abstract class LocationInterface {}

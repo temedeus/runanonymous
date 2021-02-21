@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:runanonymous/service/app_retain_service_interface.dart';
 
 class AppRetainService implements AppRetainServiceInterface {
-  static const _channel =
+  static final _channel =
       const MethodChannel('com.example.simplerunner/app_retain');
 
   static const String SEND_TO_FOREGROUND = "sendToBackground";

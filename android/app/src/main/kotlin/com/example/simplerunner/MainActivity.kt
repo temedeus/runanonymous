@@ -14,7 +14,7 @@ class MainActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Notifications.createNotificationChannels(this)
-        runningPerformanceBackgroundServiceIntent =  Intent(this, RunningPerformanceBackgroundService::class.java)
+        runningPerformanceBackgroundServiceIntent =  Intent(this, AppRetainService::class.java)
     }
 
     override fun onDestroy() {

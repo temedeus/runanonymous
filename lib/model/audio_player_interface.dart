@@ -1,5 +1,5 @@
 abstract class AudioPlayerInterface {
-  void playSound(String sound);
+  Future<void> playSound(String sound);
 
   void clear();
 }

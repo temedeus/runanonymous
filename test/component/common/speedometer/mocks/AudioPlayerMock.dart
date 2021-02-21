@@ -7,7 +7,7 @@ class AudioPlayerMock implements AudioPlayerInterface {
   }
 
   @override
-  void playSound(String sound) {
+  Future<void> playSound(String sound) {
     // TODO: implement playSound
   }
 }

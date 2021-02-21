@@ -4,9 +4,13 @@ import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/speedometer/speedometer.dart';
 import 'package:runanonymous/service/app_retain_service_interface.dart';
 import 'package:runanonymous/service/audio_service_interface.dart';
+import 'package:runanonymous/service/location_service_interface.dart';
+import 'package:runanonymous/service/timer_service_interface.dart';
 
 import 'mocks/AppRetainServiceMock.dart';
 import 'mocks/AudioServiceInterfaceMock.dart';
+import 'mocks/LocationServiceMock.dart';
+import 'mocks/TimerServiceMock.dart';
 
 void main() {
   GetIt locator = GetIt.instance;
@@ -16,6 +20,10 @@ void main() {
         () => AppRetainServiceMock());
     locator
         .registerLazySingleton<AudioServiceInterface>(() => AudioServiceMock());
+    locator
+        .registerLazySingleton<TimerServiceInterface>(() => TimerServiceMock());
+    locator.registerLazySingleton<LocationServiceInterface>(
+        () => LocationServiceMock());
   });
 
   testWidgets('Speedometer is pumped', (WidgetTester tester) async {

@@ -8,9 +8,13 @@ import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/app_retain_widget.dart';
 import 'package:runanonymous/component/speedometer/speed_text.dart';
 import 'package:runanonymous/model/audio_player_interface.dart';
+import 'package:runanonymous/model/location_interface.dart';
+import 'package:runanonymous/model/timer_interface.dart';
 import 'package:runanonymous/service/app_retain_service_interface.dart';
 import 'package:runanonymous/service/audio_service_interface.dart';
+import 'package:runanonymous/service/location_service_interface.dart';
 import 'package:runanonymous/service/service_locator.dart';
+import 'package:runanonymous/service/timer_service_interface.dart';
 
 class Speedometer extends StatefulWidget {
   final double targetSpeed;
@@ -29,14 +33,18 @@ class _SpeedometerState extends State<Speedometer> {
   final AppRetainServiceInterface _appRetainServiceInterface =
       locator<AppRetainServiceInterface>();
   final AudioServiceInterface _audioService = locator<AudioServiceInterface>();
+  final LocationServiceInterface _locationService =
+      locator<LocationServiceInterface>();
+  final TimerServiceInterface _timerService = locator<TimerServiceInterface>();
 
   Location _location;
   LocationData _currentLocation;
   PermissionStatus _permissionGranted;
-  Timer _timer;
   StreamSubscription<LocationData> _locationSubscription;
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
   AudioPlayerInterface _audioPlayerFacade;
+  TimerInterface _timerFacade;
+  LocationInterface _locationFacade;
 
   static const String SOUND_TOO_SLOW = "sounds/faster.wav";
   static const String SOUND_TOO_FAST = "sounds/slowdown.wav";
@@ -74,7 +82,7 @@ class _SpeedometerState extends State<Speedometer> {
   }
 
   void _initTimer() {
-    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
+    var callback = () {
       if (_currentLocation != null) {
         double convertedCurrentSpeed = _convertedSpeed();
         debugPrint("Monitoring running speed...");
@@ -96,7 +104,8 @@ class _SpeedometerState extends State<Speedometer> {
           }
         }
       }
-    });
+    };
+    _timerFacade = _timerService.provideTimer(callback);
   }
 
   double _convertedSpeed() {
@@ -135,7 +144,7 @@ class _SpeedometerState extends State<Speedometer> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timerFacade.stopTimer();
     if (_locationSubscription != null) _locationSubscription.cancel();
     //   Screen.keepOn(false);
     _audioPlayerFacade.clear();
