@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:runanonymous/common/constants.dart';
@@ -37,38 +35,29 @@ class _SpeedometerState extends State<Speedometer> {
       locator<LocationServiceInterface>();
   final TimerServiceInterface _timerService = locator<TimerServiceInterface>();
 
-  Location _location;
+  LocationInterface _locationFacade;
   LocationData _currentLocation;
-  PermissionStatus _permissionGranted;
-  StreamSubscription<LocationData> _locationSubscription;
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
   AudioPlayerInterface _audioPlayerFacade;
   TimerInterface _timerFacade;
-  LocationInterface _locationFacade;
 
   static const String SOUND_TOO_SLOW = "sounds/faster.wav";
   static const String SOUND_TOO_FAST = "sounds/slowdown.wav";
 
   _SpeedometerState(this.targetSpeed, this.speedUnit) {
     _audioPlayerFacade = _audioService.getAudioPlayer();
-  }
-
-  double get _conversionRate {
-    switch (speedUnit) {
-      case SpeedUnit.KMH:
-        return Constants.MS_TO_KMH_CONVERSION_RATE;
-      case SpeedUnit.MPH:
-        return Constants.MS_TO_MPH_CONVERSION_RATE;
-      default:
-        return 1;
-    }
+    _locationFacade = _locationService.createLocation();
   }
 
   @override
   void initState() {
     super.initState();
-    _ensureLocationAvailable();
     _initTimer();
+    _locationFacade.ensureLocationAvailable((event) {
+      setState(() {
+        _currentLocation = event;
+      });
+    });
     _appRetainServiceInterface.startService();
   }
 
@@ -106,6 +95,18 @@ class _SpeedometerState extends State<Speedometer> {
       }
     };
     _timerFacade = _timerService.provideTimer(callback);
+    _timerFacade.startTimer();
+  }
+
+  double get _conversionRate {
+    switch (speedUnit) {
+      case SpeedUnit.KMH:
+        return Constants.MS_TO_KMH_CONVERSION_RATE;
+      case SpeedUnit.MPH:
+        return Constants.MS_TO_MPH_CONVERSION_RATE;
+      default:
+        return 1;
+    }
   }
 
   double _convertedSpeed() {
@@ -116,37 +117,11 @@ class _SpeedometerState extends State<Speedometer> {
     await _audioPlayerFacade.playSound(sound);
   }
 
-  void _ensureLocationAvailable() async {
-    _location = Location();
-    bool _serviceEnabled;
-    _serviceEnabled = await _location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await _location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    _permissionGranted = await _location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await _location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-
-    _locationSubscription = _location.onLocationChanged.listen((event) {
-      setState(() {
-        _currentLocation = event;
-      });
-    });
-  }
-
   @override
   void dispose() {
     _timerFacade.stopTimer();
-    if (_locationSubscription != null) _locationSubscription.cancel();
     //   Screen.keepOn(false);
+    _locationFacade.cancelLocationSubscription();
     _audioPlayerFacade.clear();
     _appRetainServiceInterface.stopService();
     super.dispose();

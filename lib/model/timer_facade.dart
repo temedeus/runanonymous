@@ -11,7 +11,7 @@ class TimerFacade implements TimerInterface {
   @override
   void startTimer() {
     _timer = Timer.periodic(Duration(seconds: 3), (timer) {
-      _callback.call();
+      _callback();
     });
   }
 
