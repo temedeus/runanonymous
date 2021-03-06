@@ -2,9 +2,10 @@
   "@@locale": "fi",
   "topbarTitle": "Runonymous",
   "runningTargetFormStartButtonLabel": "Aloita",
-  "runningTargetFormResetButtonLabel": "Nollaa",
   "runningTargetFormTargetSpeedText": "Tavoitenopeus: \n",
   "runningTargetFormDistancefieldUnit": "Yksikkö",
+  "runningTargetFormDistanceFieldCaption": "Etäisyys",
+  "trackingScreenStopSession": "Keskeytä",
   "commonHours": "Tunnit",
   "commonMinutes": "Minuutit",
   "commonSeconds": "Sekunnit"

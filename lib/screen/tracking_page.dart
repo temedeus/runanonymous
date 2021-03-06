@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runanonymous/bloc/running_target_bloc.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/speedometer/speedometer.dart';
+import 'package:runanonymous/generated/l10n.dart';
 
 import '../component/common/main_menu_button.dart';
 
@@ -17,10 +18,11 @@ class TrackingPage extends StatelessWidget {
           String targetSpeed =
               state.speed != null ? state.speed.toStringAsFixed(1) : "--";
           SpeedUnit speedUnitClear = state.speedUnit;
-          String targetSpeedText = "Target speed: " +
-              targetSpeed.toString() +
-              " " +
-              speedUnitClear.unit;
+          String targetSpeedText =
+              S.of(context).runningTargetFormTargetSpeedText +
+                  targetSpeed.toString() +
+                  " " +
+                  speedUnitClear.unit;
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -35,7 +37,8 @@ class TrackingPage extends StatelessWidget {
                 ),
               ),
               Speedometer(state.speed, state.speedUnit),
-              MenuButton("Stop Session", () => Navigator.pop(context)),
+              MenuButton(S.of(context).trackingScreenStopSession,
+                  () => Navigator.pop(context)),
             ],
           );
         });

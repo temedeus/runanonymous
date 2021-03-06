@@ -33,7 +33,7 @@ class _DistanceFieldState extends State<DistanceField> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 20),
                   child: NumberInputField(
-                    "Distance",
+                    S.of(context).runningTargetFormDistanceFieldCaption,
                     onSaved: (String value) {},
                     hintText: "0",
                     controller: controller,
