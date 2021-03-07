@@ -1,4 +1,4 @@
-import 'package:runanonymous/model/timer_interface.dart';
+import 'package:runanonymous/service/timer/timer_interface.dart';
 
 class TimerFacadeMock implements TimerInterface {
   @override

@@ -1,4 +1,4 @@
-import 'package:runanonymous/service/app_retain_service_interface.dart';
+import 'package:runanonymous/service/app_retain/app_retain_service_interface.dart';
 
 class AppRetainServiceMock implements AppRetainServiceInterface {
   @override

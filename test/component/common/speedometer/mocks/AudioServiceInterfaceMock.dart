@@ -1,5 +1,5 @@
-import 'package:runanonymous/model/audio_player_interface.dart';
-import 'package:runanonymous/service/audio_service_interface.dart';
+import 'package:runanonymous/service/audioplayer/audio_player_interface.dart';
+import 'package:runanonymous/service/audioplayer/audio_service_interface.dart';
 
 import 'AudioPlayerMock.dart';
 

@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:location/location.dart';
-import 'package:runanonymous/model/location_interface.dart';
+
+import 'location_interface.dart';
 
 class LocationFacade implements LocationInterface {
   Location _location;

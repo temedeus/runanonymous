@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
-import 'package:runanonymous/service/app_retain_service_interface.dart';
+
+import 'app_retain_service_interface.dart';
 
 class AppRetainService implements AppRetainServiceInterface {
   static final _channel =

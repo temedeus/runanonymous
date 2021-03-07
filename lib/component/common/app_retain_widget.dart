@@ -1,21 +1,22 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:runanonymous/common/app_retain_service_method.dart';
+import 'package:runanonymous/service/app_retain/app_retain_service_interface.dart';
+import 'package:runanonymous/service/service_locator.dart';
 
 class AppRetainWidget extends StatelessWidget {
-  const AppRetainWidget({Key key, this.child}) : super(key: key);
+  AppRetainWidget({Key key, this.child}) : super(key: key);
 
+  final AppRetainServiceInterface _appRetainServiceInterface =
+      locator<AppRetainServiceInterface>();
   final Widget child;
-
-  final _channel = AppRetainServiceMethod.METHOD_CHANNEL;
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         if (Platform.isAndroid) {
-          _channel.invokeMethod(AppRetainServiceMethod.SEND_TO_FOREGROUND);
+          _appRetainServiceInterface.sendToForeground();
         }
         return false;
       },

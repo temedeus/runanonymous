@@ -1,6 +1,7 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:runanonymous/model/audio_player_interface.dart';
+
+import 'audio_player_interface.dart';
 
 class AudioPlayerFacade implements AudioPlayerInterface {
   AudioCache _audioCache;

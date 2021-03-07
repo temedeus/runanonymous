@@ -1,4 +1,4 @@
-import 'package:runanonymous/model/audio_player_interface.dart';
+import 'package:runanonymous/service/audioplayer/audio_player_interface.dart';
 
 class AudioPlayerMock implements AudioPlayerInterface {
   @override

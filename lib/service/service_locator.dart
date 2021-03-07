@@ -1,12 +1,13 @@
 import 'package:get_it/get_it.dart';
-import 'package:runanonymous/service/app_retain_service.dart';
-import 'package:runanonymous/service/app_retain_service_interface.dart';
-import 'package:runanonymous/service/audio_service.dart';
-import 'package:runanonymous/service/audio_service_interface.dart';
-import 'package:runanonymous/service/location_service.dart';
-import 'package:runanonymous/service/location_service_interface.dart';
-import 'package:runanonymous/service/timer_service.dart';
-import 'package:runanonymous/service/timer_service_interface.dart';
+import 'package:runanonymous/service/timer/timer_service.dart';
+import 'package:runanonymous/service/timer/timer_service_interface.dart';
+
+import 'app_retain/app_retain_service.dart';
+import 'app_retain/app_retain_service_interface.dart';
+import 'audioplayer/audio_service.dart';
+import 'audioplayer/audio_service_interface.dart';
+import 'location/location_service.dart';
+import 'location/location_service_interface.dart';
 
 GetIt locator = GetIt.instance;
 

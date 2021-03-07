@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:runanonymous/model/timer_interface.dart';
+import 'package:runanonymous/service/timer/timer_interface.dart';
 
 class TimerFacade implements TimerInterface {
   Timer _timer;

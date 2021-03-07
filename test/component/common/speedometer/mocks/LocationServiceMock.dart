@@ -1,5 +1,5 @@
-import 'package:runanonymous/model/location_interface.dart';
-import 'package:runanonymous/service/location_service_interface.dart';
+import 'package:runanonymous/service/location/location_interface.dart';
+import 'package:runanonymous/service/location/location_service_interface.dart';
 
 import 'LocationFacadeMock.dart';
 

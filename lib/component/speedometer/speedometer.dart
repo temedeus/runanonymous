@@ -5,14 +5,14 @@ import 'package:runanonymous/common/unit/speed_status.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/app_retain_widget.dart';
 import 'package:runanonymous/component/speedometer/speed_text.dart';
-import 'package:runanonymous/model/audio_player_interface.dart';
-import 'package:runanonymous/model/location_interface.dart';
-import 'package:runanonymous/model/timer_interface.dart';
-import 'package:runanonymous/service/app_retain_service_interface.dart';
-import 'package:runanonymous/service/audio_service_interface.dart';
-import 'package:runanonymous/service/location_service_interface.dart';
+import 'package:runanonymous/service/app_retain/app_retain_service_interface.dart';
+import 'package:runanonymous/service/audioplayer/audio_player_interface.dart';
+import 'package:runanonymous/service/audioplayer/audio_service_interface.dart';
+import 'package:runanonymous/service/location/location_interface.dart';
+import 'package:runanonymous/service/location/location_service_interface.dart';
 import 'package:runanonymous/service/service_locator.dart';
-import 'package:runanonymous/service/timer_service_interface.dart';
+import 'package:runanonymous/service/timer/timer_interface.dart';
+import 'package:runanonymous/service/timer/timer_service_interface.dart';
 
 class Speedometer extends StatefulWidget {
   final double targetSpeed;
