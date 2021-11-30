@@ -6,8 +6,6 @@ import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/app_retain_widget.dart';
 import 'package:runanonymous/component/speedometer/speed_text.dart';
 import 'package:runanonymous/service/app_retain/app_retain_service_interface.dart';
-import 'package:runanonymous/service/audioplayer/audio_player_interface.dart';
-import 'package:runanonymous/service/audioplayer/audio_service_interface.dart';
 import 'package:runanonymous/service/location/location_interface.dart';
 import 'package:runanonymous/service/location/location_service_interface.dart';
 import 'package:runanonymous/service/service_locator.dart';
@@ -30,7 +28,6 @@ class _SpeedometerState extends State<Speedometer> {
 
   final AppRetainServiceInterface _appRetainServiceInterface =
       locator<AppRetainServiceInterface>();
-  final AudioServiceInterface _audioService = locator<AudioServiceInterface>();
   final LocationServiceInterface _locationService =
       locator<LocationServiceInterface>();
   final TimerServiceInterface _timerService = locator<TimerServiceInterface>();
@@ -38,14 +35,9 @@ class _SpeedometerState extends State<Speedometer> {
   LocationInterface _locationFacade;
   LocationData _currentLocation;
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
-  AudioPlayerInterface _audioPlayerFacade;
   TimerInterface _timerFacade;
 
-  static const String SOUND_TOO_SLOW = "sounds/faster.wav";
-  static const String SOUND_TOO_FAST = "sounds/slowdown.wav";
-
   _SpeedometerState(this.targetSpeed, this.speedUnit) {
-    _audioPlayerFacade = _audioService.getAudioPlayer();
     _locationFacade = _locationService.createLocation();
   }
 
@@ -80,14 +72,12 @@ class _SpeedometerState extends State<Speedometer> {
 
           if (convertedCurrentSpeed < targetSpeed * Constants.LOWER_THRESHOLD) {
             _speedStatus = SpeedStatus.SLOW;
-            _playLocalSound(SOUND_TOO_SLOW);
             debugPrint(
                 "You're running too slow! Current: $convertedCurrentSpeed target: $targetSpeed");
           }
 
           if (convertedCurrentSpeed > targetSpeed * Constants.UPPER_THRESHOLD) {
             _speedStatus = SpeedStatus.FAST;
-            _playLocalSound(SOUND_TOO_FAST);
             debugPrint(
                 "You're running too fast!: $convertedCurrentSpeed target: $targetSpeed");
           }
@@ -113,16 +103,13 @@ class _SpeedometerState extends State<Speedometer> {
     return _currentLocation.speed * _conversionRate ?? 0;
   }
 
-  _playLocalSound(sound) async {
-    await _audioPlayerFacade.playSound(sound);
-  }
+  _playLocalSound(sound) async {}
 
   @override
   void dispose() {
     _timerFacade.stopTimer();
     //   Screen.keepOn(false);
     _locationFacade.cancelLocationSubscription();
-    _audioPlayerFacade.clear();
     _appRetainServiceInterface.stopService();
     super.dispose();
   }
