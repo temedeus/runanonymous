@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:runanonymous/bloc/running_time.dart';
+import 'package:runanonymous/bloc/running_target/running_time.dart';
 import 'package:runanonymous/common/unit/distance_unit.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
 

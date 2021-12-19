@@ -36,6 +36,7 @@ class _SpeedometerState extends State<Speedometer> {
   LocationData _currentLocation;
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
   TimerInterface _timerFacade;
+  List<double> _speedList;
 
   _SpeedometerState(this.targetSpeed, this.speedUnit) {
     _locationFacade = _locationService.createLocation();
@@ -50,6 +51,7 @@ class _SpeedometerState extends State<Speedometer> {
         _currentLocation = event;
       });
     });
+    _speedList = [];
     _appRetainServiceInterface.startService();
   }
 
@@ -66,7 +68,9 @@ class _SpeedometerState extends State<Speedometer> {
     var callback = () {
       if (_currentLocation != null) {
         double convertedCurrentSpeed = _convertedSpeed();
-        debugPrint("Monitoring running speed...");
+        _speedList.add(convertedCurrentSpeed);
+
+        debugPrint("Monitoring running speed... $convertedCurrentSpeed");
         if (convertedCurrentSpeed > Constants.MINIMUM_SPEED_TO_TRACK) {
           _speedStatus = SpeedStatus.ON_TIME;
 
@@ -102,8 +106,6 @@ class _SpeedometerState extends State<Speedometer> {
   double _convertedSpeed() {
     return _currentLocation.speed * _conversionRate ?? 0;
   }
-
-  _playLocalSound(sound) async {}
 
   @override
   void dispose() {

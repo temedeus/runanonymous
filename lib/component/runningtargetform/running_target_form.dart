@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:runanonymous/bloc/running_target_bloc.dart';
-import 'package:runanonymous/bloc/running_time.dart';
-import 'package:runanonymous/bloc/running_time_event.dart';
+import 'package:runanonymous/bloc/running_target/running_target_bloc.dart';
+import 'package:runanonymous/bloc/running_target/running_time.dart';
+import 'package:runanonymous/bloc/running_target/running_time_event.dart';
 import 'package:runanonymous/common/route_mapping.dart';
 import 'package:runanonymous/component/common/main_menu_button.dart';
 import 'package:runanonymous/component/runningtargetform/distance_field.dart';

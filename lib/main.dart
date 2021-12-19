@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:runanonymous/bloc/running_target_bloc.dart';
+import 'package:runanonymous/bloc/running_target/running_target_bloc.dart';
 import 'package:runanonymous/common/route_mapping.dart';
 import 'package:runanonymous/generated/l10n.dart';
 import 'package:runanonymous/screen/main_app.dart';
@@ -16,8 +16,11 @@ void main() {
 class RunanonymousApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RunningTargetBloc>(
-      create: (BuildContext context) => RunningTargetBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<RunningTargetBloc>(
+            create: (BuildContext context) => RunningTargetBloc())
+      ],
       child: MaterialApp(
         theme: new ThemeData(
             primaryColor: Colors.white,

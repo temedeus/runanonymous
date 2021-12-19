@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:runanonymous/bloc/running_target_bloc.dart';
-import 'package:runanonymous/bloc/running_target_state.dart';
-import 'package:runanonymous/bloc/running_time.dart';
-import 'package:runanonymous/bloc/running_time_event.dart';
+import 'package:runanonymous/bloc/running_target/running_target_bloc.dart';
+import 'package:runanonymous/bloc/running_target/running_target_state.dart';
+import 'package:runanonymous/bloc/running_target/running_time.dart';
+import 'package:runanonymous/bloc/running_target/running_time_event.dart';
 import 'package:runanonymous/common/unit/distance_unit.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
 
