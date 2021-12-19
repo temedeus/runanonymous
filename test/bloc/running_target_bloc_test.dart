@@ -15,19 +15,21 @@ void main() {
       speed: 0,
       speedUnit: SpeedUnit.KMH);
 
-  RunningTargetState createOnInitialState({
+  List createOnInitialState({
     distance,
     distanceUnit,
     time,
     speed,
     speedUnit,
   }) {
-    return RunningTargetBloc().fromOldSettingState(_initialState,
-        distance: distance ?? _initialState.distance,
-        distanceUnit: distanceUnit ?? _initialState.distanceUnit,
-        time: time ?? _initialState.time,
-        speed: speed ?? _initialState.speed,
-        speedUnit: speedUnit ?? _initialState.speedUnit);
+    return [
+      RunningTargetBloc().fromOldSettingState(_initialState,
+          distance: distance ?? _initialState.distance,
+          distanceUnit: distanceUnit ?? _initialState.distanceUnit,
+          time: time ?? _initialState.time,
+          speed: speed ?? _initialState.speed,
+          speedUnit: speedUnit ?? _initialState.speedUnit)
+    ];
   }
 
   group('RunningTargetBloc', () {
