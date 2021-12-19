@@ -35,7 +35,7 @@ class RunningTargetFormState extends State<RunningTargetForm> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder(
-      cubit: BlocProvider.of<RunningTargetBloc>(context),
+      bloc: BlocProvider.of<RunningTargetBloc>(context),
       builder: (BuildContext context, state) {
         String targetSpeed =
             state.speed != null ? state.speed.toStringAsFixed(1) : "--";

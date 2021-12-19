@@ -1,6 +1,4 @@
 /// The [dart:async] is necessary for using streams
-import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runanonymous/bloc/running_target/running_target_state.dart';
 import 'package:runanonymous/bloc/running_target/running_time.dart';
@@ -18,7 +16,19 @@ class RunningTargetBloc
     speedUnit: SpeedUnit.KMH,
   );
 
-  RunningTargetBloc() : super(_initialState);
+  RunningTargetBloc() : super(_initialState) {
+    on<UpdateDistanceEvent>((event, emit) =>
+        emit(fromOldSettingState(state, distance: event.payload)));
+    on<UpdateRunningTimeEvent>(
+        (event, emit) => emit(fromOldSettingState(state, time: event.payload)));
+    on<UpdateSpeedEvent>((event, emit) =>
+        emit(fromOldSettingState(state, speed: event.payload)));
+    on<UpdateSpeedUnitEvent>((event, emit) =>
+        emit(fromOldSettingState(state, speedUnit: event.payload)));
+    on<UpdateDistanceUnitEvent>((event, emit) =>
+        emit(fromOldSettingState(state, distanceUnit: event.payload)));
+    on<ResetFormEvent>((event, emit) => emit(resetState()));
+  }
 
   RunningTargetState resetState() {
     return _initialState;
@@ -53,24 +63,5 @@ class RunningTargetBloc
     int second = time.seconds ?? 0;
     double hourTime = (hour + minute / 60 + second / 3600);
     return (hourTime > 0) ? distance / hourTime : 0;
-  }
-
-  @override
-  Stream<RunningTargetState> mapEventToState(
-      AbstractRunningTimeEvent event) async* {
-    final _state = state;
-    if (event is UpdateDistanceEvent) {
-      yield fromOldSettingState(_state, distance: event.payload);
-    } else if (event is UpdateRunningTimeEvent) {
-      yield fromOldSettingState(_state, time: event.payload);
-    } else if (event is UpdateSpeedEvent) {
-      yield fromOldSettingState(_state, speed: event.payload);
-    } else if (event is UpdateSpeedUnitEvent) {
-      yield fromOldSettingState(_state, speedUnit: event.payload);
-    } else if (event is UpdateDistanceUnitEvent) {
-      yield fromOldSettingState(_state, distanceUnit: event.payload);
-    } else if (event is ResetFormEvent) {
-      yield resetState();
-    }
   }
 }
