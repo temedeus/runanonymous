@@ -2,16 +2,16 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 @immutable
-class RunningActualisedState extends Equatable {
+class RunningProgressState extends Equatable {
   final List averageSpeeds;
-  final double speedList;
+  final double speedSum;
   final double distanceTravelledTotal;
   final double distanceTravelled;
   final double distanceDataPointCounter;
 
-  RunningActualisedState(
+  RunningProgressState(
       {this.averageSpeeds,
-      this.speedList,
+      this.speedSum,
       this.distanceTravelled,
       this.distanceTravelledTotal,
       this.distanceDataPointCounter});
@@ -19,7 +19,7 @@ class RunningActualisedState extends Equatable {
   @override
   List<Object> get props => [
         averageSpeeds,
-        speedList,
+        speedSum,
         distanceTravelled,
         distanceTravelledTotal,
         distanceDataPointCounter,

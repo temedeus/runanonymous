@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:runanonymous/bloc/running_actualised/running_actualised_datapoint.dart';
+import 'package:runanonymous/bloc/running_actualised/running_progress_datapoint.dart';
 
 @immutable
 abstract class RunningActualisedEvent {
@@ -13,6 +13,5 @@ class ResetFormEvent extends RunningActualisedEvent {
 }
 
 class UpdateRunningProgressEvent extends RunningActualisedEvent {
-  UpdateRunningProgressEvent(RunningActualisedDatapoint payload)
-      : super(payload);
+  UpdateRunningProgressEvent(RunningProgressDatapoint payload) : super(payload);
 }
