@@ -15,7 +15,7 @@ void main() {
       speed: 0,
       speedUnit: SpeedUnit.KMH);
 
-  List createOnInitialState({
+  List createState({
     distance,
     distanceUnit,
     time,
@@ -43,49 +43,49 @@ void main() {
       'emits speed when UpdateSpeedEvent is added',
       build: () => RunningTargetBloc(),
       act: (bloc) => bloc.add(UpdateSpeedEvent(14.3.toDouble())),
-      expect: () => createOnInitialState(speed: 14.3.toDouble()),
+      expect: () => createState(speed: 14.3.toDouble()),
     );
 
     blocTest(
       'emits speedunit MPH when UpdateSpeedUnitEvent is added',
       build: () => RunningTargetBloc(),
       act: (bloc) => bloc.add(UpdateSpeedUnitEvent(SpeedUnit.MPH)),
-      expect: () => createOnInitialState(speedUnit: SpeedUnit.MPH),
+      expect: () => createState(speedUnit: SpeedUnit.MPH),
     );
 
     blocTest(
       'emits speedunit KMH when UpdateSpeedUnitEvent is added',
       build: () => RunningTargetBloc(),
       act: (bloc) => bloc.add(UpdateSpeedUnitEvent(SpeedUnit.KMH)),
-      expect: () => createOnInitialState(speedUnit: SpeedUnit.KMH),
+      expect: () => createState(speedUnit: SpeedUnit.KMH),
     );
 
     blocTest(
       'emits distance when UpdateDistanceEvent is added',
       build: () => RunningTargetBloc(),
       act: (bloc) => bloc.add(UpdateDistanceEvent(5.toDouble())),
-      expect: () => createOnInitialState(distance: 5.toDouble()),
+      expect: () => createState(distance: 5.toDouble()),
     );
 
     blocTest(
       'emits distanceunit KM when UpdateDistanceUnitEvent is added',
       build: () => RunningTargetBloc(),
       act: (bloc) => bloc.add(UpdateDistanceUnitEvent(DistanceUnit.KM)),
-      expect: () => createOnInitialState(distanceUnit: DistanceUnit.KM),
+      expect: () => createState(distanceUnit: DistanceUnit.KM),
     );
 
     blocTest(
       'emits distanceunit mile when UpdateDistanceUnitEvent is added',
       build: () => RunningTargetBloc(),
       act: (bloc) => bloc.add(UpdateDistanceUnitEvent(DistanceUnit.M)),
-      expect: () => createOnInitialState(distanceUnit: DistanceUnit.M),
+      expect: () => createState(distanceUnit: DistanceUnit.M),
     );
 
     blocTest(
       'emits running time when UpdateSpeedUnitEvent is added',
       build: () => RunningTargetBloc(),
       act: (bloc) => bloc.add(UpdateRunningTimeEvent(RunningTime(10, 10, 10))),
-      expect: () => createOnInitialState(time: RunningTime(10, 10, 10)),
+      expect: () => createState(time: RunningTime(10, 10, 10)),
     );
   });
 }
