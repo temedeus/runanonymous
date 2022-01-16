@@ -16,11 +16,8 @@ void main() {
 class RunanonymousApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<RunningTargetBloc>(
-            create: (BuildContext context) => RunningTargetBloc())
-      ],
+    return BlocProvider<RunningTargetBloc>(
+      create: (BuildContext context) => RunningTargetBloc(),
       child: MaterialApp(
         theme: new ThemeData(
             primaryColor: Colors.white,

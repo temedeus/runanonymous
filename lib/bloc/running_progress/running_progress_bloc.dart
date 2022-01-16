@@ -2,12 +2,13 @@ import 'package:bloc/bloc.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_datapoint.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_event.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_state.dart';
+import 'package:runanonymous/bloc/running_progress/speed_average_entry.dart';
 
 class RunningProgressBloc
     extends Bloc<RunningProgressEvent, RunningProgressState> {
   static final int _maxPoints = 10;
   static final RunningProgressState _initialState = RunningProgressState(
-    averageSpeeds: new Map<double, double>(),
+    averageSpeeds: [],
     speedSumDataPoint: 0,
     distanceTravelled: 0,
     speedSumTotal: 0,
@@ -49,7 +50,7 @@ class RunningProgressBloc
 
   RunningProgressState updateSpeedDataPoint(RunningProgressState oldState,
       RunningProgressDatapoint runningProgressDatapoint) {
-    var averageSpeeds = Map<double, double>.from(oldState.averageSpeeds);
+    var averageSpeeds = oldState.averageSpeeds;
     var distanceDataPointCounter = oldState.distanceDataPointCounter + 1;
     var distanceTravelled = oldState.distanceTravelled +
         runningProgressDatapoint.distanceToPreviousLocation;
@@ -62,10 +63,14 @@ class RunningProgressBloc
         _maxPoints *
         (oldState.averageSpeeds.length + 1);
 
-    if (distanceTravelled >= milestone) {
+    if (distanceTravelled >= milestone &&
+        averageSpeeds.length < _maxPoints &&
+        distanceTravelled <= oldState.targetDistance) {
+      averageSpeeds = List.from(oldState.averageSpeeds);
       var speedAverageWithinDataPoint =
           speedSumDataPoint / distanceDataPointCounter;
-      averageSpeeds[distanceTravelled] = speedAverageWithinDataPoint;
+      averageSpeeds.add(
+          SpeedAverageEntry(distanceTravelled, speedAverageWithinDataPoint));
       distanceDataPointCounter = 0;
       speedSumDataPoint = 0;
     }

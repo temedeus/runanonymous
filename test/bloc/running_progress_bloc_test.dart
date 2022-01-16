@@ -4,10 +4,11 @@ import 'package:runanonymous/bloc/running_progress/running_progress_bloc.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_datapoint.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_event.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_state.dart';
+import 'package:runanonymous/bloc/running_progress/speed_average_entry.dart';
 
 void main() {
   RunningProgressState _initialState = RunningProgressState(
-    averageSpeeds: new Map<double, double>(),
+    averageSpeeds: [],
     speedSumDataPoint: 0,
     distanceTravelled: 0,
     speedSumTotal: 0,
@@ -81,7 +82,8 @@ void main() {
             ]);
   });
 
-  blocTest('emits running progress when UpdateRunningProgressEvent is added',
+  blocTest(
+      'emits running progress with updated speed/distance when UpdateRunningProgressEvent is added and milestone reached',
       build: () => RunningProgressBloc(),
       skip: 1,
       act: (bloc) => bloc
@@ -97,7 +99,7 @@ void main() {
               distanceDataPointCounter: 1,
             ),
             createState(
-              averageSpeeds: {30.0: 7.5},
+              averageSpeeds: [SpeedAverageEntry(30.0, 7.5)],
               speedSumTotal: 15.toDouble(),
               speedSumDataPoint: 0.toDouble(),
               targetDistance: 50.toDouble(),

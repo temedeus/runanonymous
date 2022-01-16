@@ -15,7 +15,6 @@ dependencies:
   flutter_bloc: ^8.0.0
   cupertino_icons: ^0.1.3
   location: ^4.3.0
-  screen: ^0.0.5
   flutter_localizations:
     sdk: flutter
   numberpicker: ^1.3.0
@@ -28,7 +27,7 @@ dev_dependencies:
     sdk: flutter
   mockito: ^5.0.16
   bloc_test: ^9.0.1
-  #test_coverage: ^0.5.0
+  #test_coverage: ^0.5.0 <- left out due to dart version incompatibility. Will restore once dep updated.
 
 flutter:
   uses-material-design: true

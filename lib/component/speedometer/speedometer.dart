@@ -15,16 +15,19 @@ import 'package:runanonymous/service/timer/timer_service_interface.dart';
 class Speedometer extends StatefulWidget {
   final double targetSpeed;
   final SpeedUnit speedUnit;
+  final Function(String) onSpeedAverageAdded;
 
-  Speedometer(this.targetSpeed, this.speedUnit);
+  Speedometer(this.targetSpeed, this.speedUnit, this.onSpeedAverageAdded);
 
   @override
-  _SpeedometerState createState() => _SpeedometerState(targetSpeed, speedUnit);
+  _SpeedometerState createState() =>
+      _SpeedometerState(targetSpeed, speedUnit, onSpeedAverageAdded);
 }
 
 class _SpeedometerState extends State<Speedometer> {
   final SpeedUnit speedUnit;
   final double targetSpeed;
+  final Function(String) onSpeedAverageAdded;
 
   final AppRetainServiceInterface _appRetainServiceInterface =
       locator<AppRetainServiceInterface>();
@@ -36,9 +39,9 @@ class _SpeedometerState extends State<Speedometer> {
   LocationData _currentLocation;
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
   TimerInterface _timerFacade;
-  List<double> _speedList;
 
-  _SpeedometerState(this.targetSpeed, this.speedUnit) {
+  _SpeedometerState(
+      this.targetSpeed, this.speedUnit, this.onSpeedAverageAdded) {
     _locationFacade = _locationService.createLocation();
   }
 
@@ -51,7 +54,6 @@ class _SpeedometerState extends State<Speedometer> {
         _currentLocation = event;
       });
     });
-    _speedList = [];
     _appRetainServiceInterface.startService();
   }
 
@@ -68,7 +70,8 @@ class _SpeedometerState extends State<Speedometer> {
     var callback = () {
       if (_currentLocation != null) {
         double convertedCurrentSpeed = _convertedSpeed();
-        _speedList.add(convertedCurrentSpeed);
+        onSpeedAverageAdded(
+            convertedCurrentSpeed.toStringAsFixed(1) + " " + speedUnit.unit);
 
         debugPrint("Monitoring running speed... $convertedCurrentSpeed");
         if (convertedCurrentSpeed > Constants.MINIMUM_SPEED_TO_TRACK) {
@@ -110,7 +113,6 @@ class _SpeedometerState extends State<Speedometer> {
   @override
   void dispose() {
     _timerFacade.stopTimer();
-    //   Screen.keepOn(false);
     _locationFacade.cancelLocationSubscription();
     _appRetainServiceInterface.stopService();
     super.dispose();
