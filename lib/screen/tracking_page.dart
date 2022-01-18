@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_bloc.dart';
+import 'package:runanonymous/bloc/running_progress/running_progress_event.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_state.dart';
 import 'package:runanonymous/bloc/running_target/running_target_bloc.dart';
+import 'package:runanonymous/bloc/running_target/running_target_state.dart';
+import 'package:runanonymous/common/unit/distance_unit.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/speedaveragelist/speed_average_list.dart';
 import 'package:runanonymous/component/speedometer/speedometer.dart';
@@ -19,11 +22,13 @@ class TrackingPage extends StatelessWidget {
       create: (BuildContext context) => RunningProgressBloc(),
       child: BlocBuilder(
           bloc: BlocProvider.of<RunningTargetBloc>(context),
-          builder: (BuildContext context, runningTargetState) {
+          builder:
+              (BuildContext context, RunningTargetState runningTargetState) {
             String targetSpeed = runningTargetState.speed != null
                 ? runningTargetState.speed.toStringAsFixed(1)
                 : "--";
             SpeedUnit speedUnitClear = runningTargetState.speedUnit;
+            double targetDistance = runningTargetState.distance;
             String targetSpeedText =
                 S.of(context).runningTargetFormTargetSpeedText +
                     targetSpeed.toString() +
@@ -34,12 +39,38 @@ class TrackingPage extends StatelessWidget {
                 GlobalKey();
             final _items = [];
 
+            BlocProvider.of<RunningProgressBloc>(context)
+                .add(SetTargetDistance(targetDistance));
+
             return BlocListener<RunningProgressBloc, RunningProgressState>(
               listenWhen: (context, runningProgressState) {
                 return runningProgressState.averageSpeeds.length >
                     _items.length;
               },
-              listener: (context, runningProgressState) {},
+              listener: (context, runningProgressState) {
+                var speedAverage = runningProgressState.averageSpeeds.last;
+                if (_items.length > 3) {
+                  String removed = _items.removeAt(0);
+                  var builder = (context, animation) {
+                    SizeTransition(
+                      key: UniqueKey(),
+                      sizeFactor: animation,
+                      child:
+                          Text(_items[0], style: const TextStyle(fontSize: 18)),
+                    );
+                  };
+                  _animatedListStateKey.currentState.removeItem(0, builder);
+                }
+                _animatedListStateKey.currentState.insertItem(_items.length);
+                _items.add("Milestone at " +
+                    speedAverage.distancePoint.toString() +
+                    " " +
+                    runningTargetState.distanceUnit.unit +
+                    ": " +
+                    speedAverage.speedAverage.toStringAsFixed(1) +
+                    " " +
+                    speedUnitClear.unit);
+              },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,12 +86,7 @@ class TrackingPage extends StatelessWidget {
                     ),
                   ),
                   Speedometer(
-                      runningTargetState.speed, runningTargetState.speedUnit,
-                      (speed) {
-                    _animatedListStateKey.currentState.insertItem(_items.length,
-                        duration: const Duration(seconds: 1));
-                    _items.add("Milestone ${_items.length + 1}: $speed");
-                  }),
+                      runningTargetState.speed, runningTargetState.speedUnit),
                   MenuButton(S.of(context).trackingScreenStopSession,
                       () => Navigator.pop(context)),
                 ],

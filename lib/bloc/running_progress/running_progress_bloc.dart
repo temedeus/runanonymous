@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_datapoint.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_event.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_state.dart';
@@ -13,7 +14,7 @@ class RunningProgressBloc
     distanceTravelled: 0,
     speedSumTotal: 0,
     distanceDataPointCounter: 0,
-    targetDistance: 0,
+    targetDistance: 10,
   );
 
   RunningProgressBloc() : super(_initialState) {
@@ -58,14 +59,17 @@ class RunningProgressBloc
         oldState.speedSumDataPoint + runningProgressDatapoint.speed;
     var speedSumTotal = oldState.speedSumTotal + runningProgressDatapoint.speed;
 
+    debugPrint("Mennää blokkii $distanceTravelled");
     // Milestone based on how many data collection points we have and at what point we are currently.
     var milestone = oldState.targetDistance /
         _maxPoints *
         (oldState.averageSpeeds.length + 1);
+    debugPrint("Milestone ${oldState.targetDistance}");
 
     if (distanceTravelled >= milestone &&
         averageSpeeds.length < _maxPoints &&
         distanceTravelled <= oldState.targetDistance) {
+      debugPrint("lisätää ");
       averageSpeeds = List.from(oldState.averageSpeeds);
       var speedAverageWithinDataPoint =
           speedSumDataPoint / distanceDataPointCounter;

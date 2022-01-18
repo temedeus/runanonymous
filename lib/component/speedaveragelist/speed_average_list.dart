@@ -25,7 +25,7 @@ class _SpeedAverageListState extends State<SpeedAverageList> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100,
+      height: 180,
       child: AnimatedList(
         key: _globalKey,
         initialItemCount: 0,

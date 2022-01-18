@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location/location.dart';
+import 'package:runanonymous/bloc/running_progress/running_progress_bloc.dart';
+import 'package:runanonymous/bloc/running_progress/running_progress_datapoint.dart';
+import 'package:runanonymous/bloc/running_progress/running_progress_event.dart';
 import 'package:runanonymous/common/constants.dart';
 import 'package:runanonymous/common/unit/speed_status.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
@@ -15,19 +19,16 @@ import 'package:runanonymous/service/timer/timer_service_interface.dart';
 class Speedometer extends StatefulWidget {
   final double targetSpeed;
   final SpeedUnit speedUnit;
-  final Function(String) onSpeedAverageAdded;
 
-  Speedometer(this.targetSpeed, this.speedUnit, this.onSpeedAverageAdded);
+  Speedometer(this.targetSpeed, this.speedUnit);
 
   @override
-  _SpeedometerState createState() =>
-      _SpeedometerState(targetSpeed, speedUnit, onSpeedAverageAdded);
+  _SpeedometerState createState() => _SpeedometerState(targetSpeed, speedUnit);
 }
 
 class _SpeedometerState extends State<Speedometer> {
   final SpeedUnit speedUnit;
   final double targetSpeed;
-  final Function(String) onSpeedAverageAdded;
 
   final AppRetainServiceInterface _appRetainServiceInterface =
       locator<AppRetainServiceInterface>();
@@ -40,8 +41,7 @@ class _SpeedometerState extends State<Speedometer> {
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
   TimerInterface _timerFacade;
 
-  _SpeedometerState(
-      this.targetSpeed, this.speedUnit, this.onSpeedAverageAdded) {
+  _SpeedometerState(this.targetSpeed, this.speedUnit) {
     _locationFacade = _locationService.createLocation();
   }
 
@@ -70,8 +70,10 @@ class _SpeedometerState extends State<Speedometer> {
     var callback = () {
       if (_currentLocation != null) {
         double convertedCurrentSpeed = _convertedSpeed();
-        onSpeedAverageAdded(
-            convertedCurrentSpeed.toStringAsFixed(1) + " " + speedUnit.unit);
+
+        BlocProvider.of<RunningProgressBloc>(context).add(
+            UpdateRunningProgressEvent(
+                RunningProgressDatapoint(convertedCurrentSpeed, 1)));
 
         debugPrint("Monitoring running speed... $convertedCurrentSpeed");
         if (convertedCurrentSpeed > Constants.MINIMUM_SPEED_TO_TRACK) {
