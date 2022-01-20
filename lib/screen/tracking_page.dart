@@ -8,7 +8,6 @@ import 'package:runanonymous/bloc/running_target/running_target_bloc.dart';
 import 'package:runanonymous/bloc/running_target/running_target_state.dart';
 import 'package:runanonymous/common/unit/distance_unit.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
-import 'package:runanonymous/component/speedaveragelist/speed_average_list.dart';
 import 'package:runanonymous/component/speedometer/speedometer.dart';
 import 'package:runanonymous/generated/l10n.dart';
 
@@ -34,48 +33,35 @@ class TrackingPage extends StatelessWidget {
                     targetSpeed.toString() +
                     " " +
                     speedUnitClear.unit;
-
-            final GlobalKey<AnimatedListState> _animatedListStateKey =
-                GlobalKey();
-            final _items = [];
+            int lastIndex = 0;
 
             BlocProvider.of<RunningProgressBloc>(context)
                 .add(SetTargetDistance(targetDistance));
 
             return BlocListener<RunningProgressBloc, RunningProgressState>(
               listenWhen: (context, runningProgressState) {
-                return runningProgressState.averageSpeeds.length >
-                    _items.length;
+                debugPrint(
+                    "ListenWhen ${runningProgressState.averageSpeeds.length} and $lastIndex");
+                return runningProgressState.averageSpeeds.length > lastIndex;
               },
               listener: (context, runningProgressState) {
+                lastIndex++;
                 var speedAverage = runningProgressState.averageSpeeds.last;
-                if (_items.length > 3) {
-                  String removed = _items.removeAt(0);
-                  var builder = (context, animation) {
-                    SizeTransition(
-                      key: UniqueKey(),
-                      sizeFactor: animation,
-                      child:
-                          Text(_items[0], style: const TextStyle(fontSize: 18)),
-                    );
-                  };
-                  _animatedListStateKey.currentState.removeItem(0, builder);
-                }
-                _animatedListStateKey.currentState.insertItem(_items.length);
-                _items.add("Milestone at " +
-                    speedAverage.distancePoint.toString() +
-                    " " +
-                    runningTargetState.distanceUnit.unit +
-                    ": " +
-                    speedAverage.speedAverage.toStringAsFixed(1) +
-                    " " +
-                    speedUnitClear.unit);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Milestone at " +
+                      speedAverage.distancePoint.toStringAsFixed(1) +
+                      " " +
+                      runningTargetState.distanceUnit.unit +
+                      ": " +
+                      speedAverage.speedAverage.toStringAsFixed(1) +
+                      " " +
+                      speedUnitClear.unit),
+                ));
               },
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  SpeedAverageList(_animatedListStateKey, _items),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: Text(

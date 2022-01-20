@@ -73,7 +73,7 @@ class _SpeedometerState extends State<Speedometer> {
 
         BlocProvider.of<RunningProgressBloc>(context).add(
             UpdateRunningProgressEvent(
-                RunningProgressDatapoint(convertedCurrentSpeed, 1)));
+                RunningProgressDatapoint(convertedCurrentSpeed, 0.2)));
 
         debugPrint("Monitoring running speed... $convertedCurrentSpeed");
         if (convertedCurrentSpeed > Constants.MINIMUM_SPEED_TO_TRACK) {
