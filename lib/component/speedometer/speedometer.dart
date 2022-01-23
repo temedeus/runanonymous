@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location/location.dart';
@@ -41,6 +43,8 @@ class _SpeedometerState extends State<Speedometer> {
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
   TimerInterface _timerFacade;
 
+  double _previousLatitude = null;
+  double _previousLongitude = null;
   _SpeedometerState(this.targetSpeed, this.speedUnit) {
     _locationFacade = _locationService.createLocation();
   }
@@ -70,10 +74,19 @@ class _SpeedometerState extends State<Speedometer> {
     var callback = () {
       if (_currentLocation != null) {
         double convertedCurrentSpeed = _convertedSpeed();
+        double _distanceToPrevious = 0;
+
+        if (_previousLatitude != null && _previousLongitude != null) {
+          _distanceToPrevious = _measure(_previousLatitude, _previousLongitude,
+              _currentLocation.latitude, _currentLocation.longitude);
+        }
+
+        _previousLatitude = _currentLocation.latitude;
+        _previousLongitude = _currentLocation.longitude;
 
         BlocProvider.of<RunningProgressBloc>(context).add(
-            UpdateRunningProgressEvent(
-                RunningProgressDatapoint(convertedCurrentSpeed, 0.2)));
+            UpdateRunningProgressEvent(RunningProgressDatapoint(
+                convertedCurrentSpeed, _distanceToPrevious)));
 
         debugPrint("Monitoring running speed... $convertedCurrentSpeed");
         if (convertedCurrentSpeed > Constants.MINIMUM_SPEED_TO_TRACK) {
@@ -95,6 +108,20 @@ class _SpeedometerState extends State<Speedometer> {
     };
     _timerFacade = _timerService.provideTimer(callback);
     _timerFacade.startTimer();
+  }
+
+  _measure(lat1, lon1, lat2, lon2) {
+    var R = 6378.137;
+    var dLat = lat2 * pi / 180 - lat1 * pi / 180;
+    var dLon = lon2 * pi / 180 - lon1 * pi / 180;
+    var a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(lat1 * pi / 180) *
+            cos(lat2 * pi / 180) *
+            sin(dLon / 2) *
+            sin(dLon / 2);
+    var c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    var d = R * c;
+    return d;
   }
 
   double get _conversionRate {

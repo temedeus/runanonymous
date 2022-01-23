@@ -8,6 +8,7 @@ import 'package:runanonymous/bloc/running_target/running_target_bloc.dart';
 import 'package:runanonymous/bloc/running_target/running_target_state.dart';
 import 'package:runanonymous/common/unit/distance_unit.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
+import 'package:runanonymous/component/common/PaddedText.dart';
 import 'package:runanonymous/component/speedometer/speedometer.dart';
 import 'package:runanonymous/generated/l10n.dart';
 
@@ -35,13 +36,12 @@ class TrackingPage extends StatelessWidget {
                     speedUnitClear.unit;
             int lastIndex = 0;
 
+            String travelledDistanceText = "...";
             BlocProvider.of<RunningProgressBloc>(context)
                 .add(SetTargetDistance(targetDistance));
 
             return BlocListener<RunningProgressBloc, RunningProgressState>(
               listenWhen: (context, runningProgressState) {
-                debugPrint(
-                    "ListenWhen ${runningProgressState.averageSpeeds.length} and $lastIndex");
                 return runningProgressState.averageSpeeds.length > lastIndex;
               },
               listener: (context, runningProgressState) {
@@ -62,15 +62,8 @@ class TrackingPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: Text(
-                      targetSpeedText,
-                      textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                    ),
-                  ),
+                  PaddedText(travelledDistanceText, 16),
+                  PaddedText(targetSpeedText, 24),
                   Speedometer(
                       runningTargetState.speed, runningTargetState.speedUnit),
                   MenuButton(S.of(context).trackingScreenStopSession,
