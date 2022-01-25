@@ -8,5 +8,8 @@
   "trackingScreenStopSession": "Stop Session",
   "commonHours": "Hours",
   "commonMinutes": "Minutes",
-  "commonSeconds": "Seconds"
+  "commonSeconds": "Seconds",
+  "milestoneAt": "Milestone at",
+  "averageSpeed": "(average speed)",
+  "travelledDistance": "Travelled distance"
 }

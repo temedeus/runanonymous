@@ -8,5 +8,8 @@
   "trackingScreenStopSession": "Keskeytä",
   "commonHours": "Tunnit",
   "commonMinutes": "Minuutit",
-  "commonSeconds": "Sekunnit"
+  "commonSeconds": "Sekunnit",
+  "milestoneAt": "Välivaihe ",
+  "averageSpeed": "(keskinopeus)",
+  "travelledDistance": "Kuljettu"
 }

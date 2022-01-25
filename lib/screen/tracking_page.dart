@@ -28,6 +28,7 @@ class TrackingPage extends StatelessWidget {
                 ? runningTargetState.speed.toStringAsFixed(1)
                 : "--";
             SpeedUnit speedUnitClear = runningTargetState.speedUnit;
+            DistanceUnit distanceUnit = runningTargetState.distanceUnit;
             double targetDistance = runningTargetState.distance;
             String targetSpeedText =
                 S.of(context).runningTargetFormTargetSpeedText +
@@ -36,7 +37,6 @@ class TrackingPage extends StatelessWidget {
                     speedUnitClear.unit;
             int lastIndex = 0;
 
-            String travelledDistanceText = "...";
             BlocProvider.of<RunningProgressBloc>(context)
                 .add(SetTargetDistance(targetDistance));
 
@@ -47,28 +47,40 @@ class TrackingPage extends StatelessWidget {
               listener: (context, runningProgressState) {
                 lastIndex++;
                 var speedAverage = runningProgressState.averageSpeeds.last;
+                String snackBarText = S.of(context).milestoneAt +
+                    " " +
+                    speedAverage.distancePoint.toStringAsFixed(1) +
+                    " " +
+                    runningTargetState.distanceUnit.unit +
+                    ": " +
+                    speedAverage.speedAverage.toStringAsFixed(1) +
+                    " " +
+                    speedUnitClear.unit +
+                    " ${S.of(context).averageSpeed}";
+
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("Milestone at " +
-                      speedAverage.distancePoint.toStringAsFixed(1) +
-                      " " +
-                      runningTargetState.distanceUnit.unit +
-                      ": " +
-                      speedAverage.speedAverage.toStringAsFixed(1) +
-                      " " +
-                      speedUnitClear.unit),
+                  content: Text(snackBarText),
                 ));
               },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  PaddedText(travelledDistanceText, 16),
-                  PaddedText(targetSpeedText, 24),
-                  Speedometer(
-                      runningTargetState.speed, runningTargetState.speedUnit),
-                  MenuButton(S.of(context).trackingScreenStopSession,
-                      () => Navigator.pop(context)),
-                ],
+              child: BlocBuilder(
+                bloc: BlocProvider.of<RunningProgressBloc>(context),
+                builder: (BuildContext context,
+                    RunningProgressState runningProgressState) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      PaddedText(
+                          "${S.of(context).travelledDistance}: \n${runningProgressState.distanceTravelled.toStringAsFixed(2)} ${distanceUnit.unit}",
+                          16),
+                      PaddedText(targetSpeedText, 24),
+                      Speedometer(runningTargetState.speed,
+                          runningTargetState.speedUnit),
+                      MenuButton(S.of(context).trackingScreenStopSession,
+                          () => Navigator.pop(context)),
+                    ],
+                  );
+                },
               ),
             );
           }),
