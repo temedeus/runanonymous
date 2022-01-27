@@ -2,12 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runanonymous/bloc/running_target/running_target_bloc.dart';
+import 'package:runanonymous/bloc/running_target/running_target_state.dart';
 import 'package:runanonymous/bloc/running_target/running_time.dart';
 import 'package:runanonymous/bloc/running_target/running_time_event.dart';
 import 'package:runanonymous/common/route_mapping.dart';
+import 'package:runanonymous/common/unit/distance_unit.dart';
+import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/main_menu_button.dart';
 import 'package:runanonymous/component/runningtargetform/distance_field.dart';
 import 'package:runanonymous/generated/l10n.dart';
+import 'package:runanonymous/screen/tracking_page_arguments.dart';
 
 import 'time_input.dart';
 
@@ -36,7 +40,7 @@ class RunningTargetFormState extends State<RunningTargetForm> {
   Widget build(BuildContext context) {
     return BlocBuilder(
       bloc: BlocProvider.of<RunningTargetBloc>(context),
-      builder: (BuildContext context, state) {
+      builder: (BuildContext context, RunningTargetState state) {
         String targetSpeed =
             state.speed != null ? state.speed.toStringAsFixed(1) : "--";
         String targetSpeedText =
@@ -59,7 +63,8 @@ class RunningTargetFormState extends State<RunningTargetForm> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: MenuButton(
                       S.of(context).runningTargetFormStartButtonLabel, () {
-                    _formSubmitAction();
+                    _formSubmitAction(state.speedUnit, state.distanceUnit,
+                        state.distance, state.speed);
                   })),
             ],
           ),
@@ -68,9 +73,13 @@ class RunningTargetFormState extends State<RunningTargetForm> {
     );
   }
 
-  void _formSubmitAction() {
+  void _formSubmitAction(SpeedUnit speedUnit, DistanceUnit distanceUnit,
+      double targetDistance, double targetSpeed) {
     if (_formKey.currentState.validate()) {
-      Navigator.pushNamed(context, RouteMapping.TRACKING.path);
+      var trackingPageArguments = TrackingPageArguments(
+          speedUnit, distanceUnit, targetDistance, targetSpeed);
+      Navigator.pushNamed(context, RouteMapping.TRACKING.path,
+          arguments: trackingPageArguments);
     }
   }
 

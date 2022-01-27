@@ -43,8 +43,9 @@ class _SpeedometerState extends State<Speedometer> {
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
   TimerInterface _timerFacade;
 
-  double _previousLatitude = null;
-  double _previousLongitude = null;
+  double _previousLatitude;
+  double _previousLongitude;
+
   _SpeedometerState(this.targetSpeed, this.speedUnit) {
     _locationFacade = _locationService.createLocation();
   }
