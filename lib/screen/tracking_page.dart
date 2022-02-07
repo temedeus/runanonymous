@@ -6,7 +6,7 @@ import 'package:runanonymous/bloc/running_progress/running_progress_event.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_state.dart';
 import 'package:runanonymous/common/unit/distance_unit.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
-import 'package:runanonymous/component/common/PaddedText.dart';
+import 'package:runanonymous/component/common/padded_text.dart';
 import 'package:runanonymous/component/speedometer/speedometer.dart';
 import 'package:runanonymous/generated/l10n.dart';
 import 'package:runanonymous/screen/tracking_page_arguments.dart';
