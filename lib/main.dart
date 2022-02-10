@@ -6,6 +6,7 @@ import 'package:runanonymous/bloc/running_target/running_target_bloc.dart';
 import 'package:runanonymous/common/route_mapping.dart';
 import 'package:runanonymous/generated/l10n.dart';
 import 'package:runanonymous/screen/main_app.dart';
+import 'package:runanonymous/screen/results_page.dart';
 import 'package:runanonymous/screen/tracking_page.dart';
 import 'package:runanonymous/service/service_locator.dart';
 
@@ -35,8 +36,12 @@ class RunanonymousApp extends StatelessWidget {
       routes: {
         RouteMapping.HOME.path: (context) =>
             _AppTemplate(_RunningTargetBlocProviderWrapper(MainPage())),
-        RouteMapping.TRACKING.path: (context) =>
-            _AppTemplate(_RunningProgressBlocProviderWrapper(TrackingPage()))
+        RouteMapping.TRACKING.path: (context) => _AppTemplate(
+              _RunningProgressBlocProviderWrapper(TrackingPage()),
+            ),
+        RouteMapping.HOME.path: (context) =>
+            _AppTemplate(_RunningTargetBlocProviderWrapper(MainPage())),
+        RouteMapping.RESULTS.path: (context) => _AppTemplate(ResultsPage()),
       },
     );
   }

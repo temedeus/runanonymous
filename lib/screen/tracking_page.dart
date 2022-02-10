@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_bloc.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_event.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_state.dart';
 import 'package:runanonymous/bloc/running_progress/speed_average_entry.dart';
+import 'package:runanonymous/common/route_mapping.dart';
 import 'package:runanonymous/common/unit/distance_unit.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/padded_text.dart';
@@ -54,8 +54,10 @@ class TrackingPage extends StatelessWidget {
                   _createTargetSpeedText(context, targetSpeed, speedUnitClear),
                   24),
               Speedometer(targetSpeed, speedUnitClear),
-              MenuButton(S.of(context).trackingScreenStopSession,
-                  () => Navigator.pop(context)),
+              MenuButton(
+                  S.of(context).trackingScreenStopSession,
+                  () =>
+                      Navigator.pushNamed(context, RouteMapping.RESULTS.path)),
             ],
           );
         },

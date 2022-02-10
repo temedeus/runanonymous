@@ -1,5 +1,5 @@
 /// Different routes used in app.
-enum RouteMapping { HOME, TRACKING }
+enum RouteMapping { HOME, TRACKING, RESULTS }
 
 /// Starting view.
 const INITIAL_ROUTE = RouteMapping.HOME;
@@ -12,6 +12,8 @@ extension RoutePath on RouteMapping {
         return "/";
       case RouteMapping.TRACKING:
         return "/tracking";
+      case RouteMapping.RESULTS:
+        return "/results";
       default:
         return null;
     }
