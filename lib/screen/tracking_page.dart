@@ -10,6 +10,7 @@ import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/padded_text.dart';
 import 'package:runanonymous/component/speedometer/speedometer.dart';
 import 'package:runanonymous/generated/l10n.dart';
+import 'package:runanonymous/screen/results_page_arguments.dart';
 import 'package:runanonymous/screen/tracking_page_arguments.dart';
 
 import '../component/common/main_menu_button.dart';
@@ -56,8 +57,12 @@ class TrackingPage extends StatelessWidget {
               Speedometer(targetSpeed, speedUnitClear),
               MenuButton(
                   S.of(context).trackingScreenStopSession,
-                  () =>
-                      Navigator.pushNamed(context, RouteMapping.RESULTS.path)),
+                  () => Navigator.pushReplacementNamed(
+                      context, RouteMapping.RESULTS.path,
+                      arguments: ResultsPageArguments(
+                          runningProgressState.averageSpeeds,
+                          speedUnitClear,
+                          distanceUnit))),
             ],
           );
         },
