@@ -20,6 +20,7 @@ class ResultsPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        Text(S.of(context).averageSpeed, style: const TextStyle(fontSize: 48)),
         SpeedAverageList(items, speedunit, distanceUnit),
         MenuButton(
             S.of(context).backToMain,

@@ -86,11 +86,10 @@ class TrackingPage extends StatelessWidget {
         speedAverage.distancePoint.toStringAsFixed(1) +
         " " +
         distanceUnit.unit +
-        ": " +
+        " - " +
         speedAverage.speedAverage.toStringAsFixed(1) +
         " " +
-        speedUnit.unit +
-        " ${S.of(context).averageSpeed}";
+        "${speedUnit.unit} ${S.of(context).averageSpeed}";
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(snackBarText),

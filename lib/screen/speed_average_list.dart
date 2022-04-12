@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:runanonymous/bloc/running_progress/speed_average_entry.dart';
 import 'package:runanonymous/common/unit/distance_unit.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
-import 'package:runanonymous/generated/l10n.dart';
 
 class SpeedAverageList extends StatefulWidget {
   final GlobalKey<AnimatedListState> _animatedListStateKey = GlobalKey();
@@ -19,7 +18,7 @@ class SpeedAverageList extends StatefulWidget {
 
 class _SpeedAverageListState extends State<SpeedAverageList> {
   final List<SpeedAverageEntry> _initialItems;
-  List<String> _items = [];
+  List _items = [];
   final SpeedUnit _speedUnit;
   final DistanceUnit _distanceUnit;
 
@@ -44,11 +43,22 @@ class _SpeedAverageListState extends State<SpeedAverageList> {
         initialItemCount: 0,
         padding: const EdgeInsets.all(10),
         itemBuilder: (_, index, animation) {
+          final SpeedAverageEntry element = _items[index];
           return SizeTransition(
-            key: UniqueKey(),
-            sizeFactor: animation,
-            child: Text(_items[index], style: const TextStyle(fontSize: 18)),
-          );
+              key: UniqueKey(),
+              sizeFactor: animation,
+              child: Row(
+                children: [
+                  Text(element.distancePoint.toStringAsFixed(1),
+                      style: const TextStyle(fontSize: 30)),
+                  Text(_distanceUnit.unit + " - ",
+                      style: const TextStyle(fontSize: 18)),
+                  Text(element.speedAverage.toStringAsFixed(1),
+                      style: const TextStyle(fontSize: 30)),
+                  Text(" ${_speedUnit.unit}",
+                      style: const TextStyle(fontSize: 30)),
+                ],
+              ));
         },
       ),
     );
@@ -57,19 +67,9 @@ class _SpeedAverageListState extends State<SpeedAverageList> {
   Future _addItems() async {
     const duration = Duration(milliseconds: 200);
     for (SpeedAverageEntry element in _initialItems) {
-      String resultText = S.of(context).milestoneAt +
-          " " +
-          element.distancePoint.toStringAsFixed(1) +
-          " " +
-          _distanceUnit.unit +
-          ": " +
-          element.speedAverage.toStringAsFixed(1) +
-          " " +
-          _speedUnit.unit +
-          " ${S.of(context).averageSpeed}";
       await new Future.delayed(duration, () {
         _globalKey.currentState.insertItem(_items.length);
-        _items.add(resultText);
+        _items.add(element);
       });
     }
   }

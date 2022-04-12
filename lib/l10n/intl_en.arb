@@ -11,6 +11,6 @@
   "commonMinutes": "Minutes",
   "commonSeconds": "Seconds",
   "milestoneAt": "Milestone at",
-  "averageSpeed": "(average speed)",
+  "averageSpeed": "Average speeds",
   "travelledDistance": "Travelled distance"
 }
