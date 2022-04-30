@@ -41,8 +41,14 @@ class _SpeedAverageListState extends State<SpeedAverageList> {
           return SizeTransition(
               key: UniqueKey(),
               sizeFactor: animation,
-              child: Row(
-                children: _generateDisplayItems(element),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(element.title, style: const TextStyle(fontSize: 22)),
+                  Row(
+                    children: _generateDisplayItems(element),
+                  ),
+                ],
               ));
         },
       ),
@@ -52,7 +58,7 @@ class _SpeedAverageListState extends State<SpeedAverageList> {
   List<Widget> _generateDisplayItems(Result element) {
     var displayItems = [
       Text(element.result.toStringAsFixed(2),
-          style: const TextStyle(fontSize: 30)),
+          style: const TextStyle(fontSize: 35)),
       Text(element.unit, style: const TextStyle(fontSize: 18))
     ];
 

@@ -12,5 +12,6 @@
   "commonSeconds": "Sekunnit",
   "milestoneAt": "Välivaihe ",
   "results": "Tulokset",
-  "travelledDistance": "Kuljettu"
+  "travelledDistance": "Kuljettu",
+  "averageSpeed": "Average speed",
 }

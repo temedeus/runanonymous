@@ -12,5 +12,6 @@
   "commonSeconds": "Seconds",
   "milestoneAt": "Milestone at",
   "results": "Results",
-  "travelledDistance": "Travelled distance"
+  "travelledDistance": "Travelled distance",
+  "averageSpeed": "Average speed"
 }
