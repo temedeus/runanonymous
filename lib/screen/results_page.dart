@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:runanonymous/common/route_mapping.dart';
-import 'package:runanonymous/common/unit/distance_unit.dart';
-import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/main_menu_button.dart';
 import 'package:runanonymous/generated/l10n.dart';
 import 'package:runanonymous/screen/results_page_arguments.dart';
@@ -13,15 +11,14 @@ class ResultsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final resultsPageArguments =
         ModalRoute.of(context).settings.arguments as ResultsPageArguments;
-    var items = resultsPageArguments.averageSpeeds;
-    SpeedUnit speedunit = resultsPageArguments.speedUnitClear;
-    DistanceUnit distanceUnit = resultsPageArguments.distanceUnit;
+    var results = resultsPageArguments.results;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(S.of(context).averageSpeed, style: const TextStyle(fontSize: 48)),
-        SpeedAverageList(items, speedunit, distanceUnit),
+        Text(S.of(context).results, style: const TextStyle(fontSize: 48)),
+        SpeedAverageList(results),
         MenuButton(
             S.of(context).backToMain,
             () => Navigator.of(context)

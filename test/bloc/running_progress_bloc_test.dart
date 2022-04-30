@@ -4,12 +4,10 @@ import 'package:runanonymous/bloc/running_progress/running_progress_bloc.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_datapoint.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_event.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_state.dart';
-import 'package:runanonymous/bloc/running_progress/speed_average_entry.dart';
 
 void main() {
   RunningProgressState _initialState = RunningProgressState(
-    averageSpeeds: [],
-    speedSumDataPoint: 0,
+    averageSpeed: 0,
     distanceTravelled: 0,
     speedSumTotal: 0,
     distanceDataPointCounter: 0,
@@ -17,16 +15,14 @@ void main() {
   );
 
   RunningProgressState createState({
-    averageSpeeds,
-    speedSumDataPoint,
+    averageSpeed,
     distanceTravelled,
     speedSumTotal,
     distanceDataPointCounter,
     targetDistance,
   }) {
     return RunningProgressState(
-      averageSpeeds: averageSpeeds ?? _initialState.averageSpeeds,
-      speedSumDataPoint: speedSumDataPoint ?? _initialState.speedSumDataPoint,
+      averageSpeed: averageSpeed ?? _initialState.averageSpeed,
       distanceTravelled: distanceTravelled ?? _initialState.distanceTravelled,
       speedSumTotal: speedSumTotal ?? _initialState.speedSumTotal,
       distanceDataPointCounter:
@@ -66,24 +62,22 @@ void main() {
           ..add(UpdateRunningProgressEvent(RunningProgressDatapoint(2, 4))),
         expect: () => [
               createState(
-                speedSumTotal: 2.toDouble(),
-                speedSumDataPoint: 2.toDouble(),
-                targetDistance: 100.toDouble(),
-                distanceTravelled: 4.toDouble(),
-                distanceDataPointCounter: 1,
-              ),
+                  speedSumTotal: 2.toDouble(),
+                  targetDistance: 100.toDouble(),
+                  distanceTravelled: 4.toDouble(),
+                  distanceDataPointCounter: 1,
+                  averageSpeed: 2.toDouble()),
               createState(
-                speedSumTotal: 4.toDouble(),
-                speedSumDataPoint: 4.toDouble(),
-                targetDistance: 100.toDouble(),
-                distanceTravelled: 8.toDouble(),
-                distanceDataPointCounter: 2,
-              )
+                  speedSumTotal: 4.toDouble(),
+                  targetDistance: 100.toDouble(),
+                  distanceTravelled: 8.toDouble(),
+                  distanceDataPointCounter: 2,
+                  averageSpeed: 2.toDouble())
             ]);
   });
 
   blocTest(
-      'emits running progress with updated speed/distance when UpdateRunningProgressEvent is added and milestone reached',
+      'emits running progress with updated speed/distance when UpdateRunningProgressEvent is added',
       build: () => RunningProgressBloc(),
       skip: 1,
       act: (bloc) => bloc
@@ -92,19 +86,17 @@ void main() {
         ..add(UpdateRunningProgressEvent(RunningProgressDatapoint(13, 28))),
       expect: () => [
             createState(
-              speedSumTotal: 2.toDouble(),
-              speedSumDataPoint: 2.toDouble(),
-              targetDistance: 50.toDouble(),
-              distanceTravelled: 2.toDouble(),
-              distanceDataPointCounter: 1,
-            ),
+                speedSumTotal: 2.toDouble(),
+                targetDistance: 50.toDouble(),
+                distanceTravelled: 2.toDouble(),
+                distanceDataPointCounter: 1,
+                averageSpeed: 2.toDouble()),
             createState(
-              averageSpeeds: [SpeedAverageEntry(30.0, 7.5)],
+              averageSpeed: 7.5.toDouble(),
               speedSumTotal: 15.toDouble(),
-              speedSumDataPoint: 0.toDouble(),
               targetDistance: 50.toDouble(),
               distanceTravelled: 30.toDouble(),
-              distanceDataPointCounter: 0,
+              distanceDataPointCounter: 2,
             ),
           ]);
 }

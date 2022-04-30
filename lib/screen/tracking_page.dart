@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_bloc.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_event.dart';
 import 'package:runanonymous/bloc/running_progress/running_progress_state.dart';
-import 'package:runanonymous/bloc/running_progress/speed_average_entry.dart';
 import 'package:runanonymous/common/route_mapping.dart';
 import 'package:runanonymous/common/unit/distance_unit.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/padded_text.dart';
 import 'package:runanonymous/component/speedometer/speedometer.dart';
 import 'package:runanonymous/generated/l10n.dart';
+import 'package:runanonymous/screen/result.dart';
 import 'package:runanonymous/screen/results_page_arguments.dart';
 import 'package:runanonymous/screen/tracking_page_arguments.dart';
 
@@ -26,48 +26,46 @@ class TrackingPage extends StatelessWidget {
     final double targetDistance = args.targetDistance;
     final double targetSpeed = args.targetSpeed;
 
-    int previousAverageSpeedsLength = 0;
     BlocProvider.of<RunningProgressBloc>(context)
         .add(SetTargetDistance(targetDistance));
 
-    return BlocListener<RunningProgressBloc, RunningProgressState>(
-      listenWhen: (context, runningProgressState) {
-        return runningProgressState.averageSpeeds.length >
-            previousAverageSpeedsLength;
+    return BlocBuilder(
+      bloc: BlocProvider.of<RunningProgressBloc>(context),
+      builder:
+          (BuildContext context, RunningProgressState runningProgressState) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            PaddedText(
+                "${S.of(context).travelledDistance}:\n${runningProgressState.distanceTravelled.toStringAsFixed(2)} ${distanceUnit.unit}",
+                16),
+            PaddedText(
+                _createTargetSpeedText(context, targetSpeed, speedUnitClear),
+                24),
+            Speedometer(targetSpeed, speedUnitClear),
+            MenuButton(
+                S.of(context).trackingScreenStopSession,
+                () => Navigator.pushReplacementNamed(
+                    context, RouteMapping.RESULTS.path,
+                    arguments: _generateResultsPageArguments(
+                        runningProgressState, speedUnitClear, distanceUnit))),
+          ],
+        );
       },
-      listener: (context, runningProgressState) {
-        previousAverageSpeedsLength = runningProgressState.averageSpeeds.length;
-        var speedAverage = runningProgressState.averageSpeeds.last;
-        _createSnackBar(context, speedAverage, distanceUnit, speedUnitClear);
-      },
-      child: BlocBuilder(
-        bloc: BlocProvider.of<RunningProgressBloc>(context),
-        builder:
-            (BuildContext context, RunningProgressState runningProgressState) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              PaddedText(
-                  "${S.of(context).travelledDistance}:\n${runningProgressState.distanceTravelled.toStringAsFixed(2)} ${distanceUnit.unit}",
-                  16),
-              PaddedText(
-                  _createTargetSpeedText(context, targetSpeed, speedUnitClear),
-                  24),
-              Speedometer(targetSpeed, speedUnitClear),
-              MenuButton(
-                  S.of(context).trackingScreenStopSession,
-                  () => Navigator.pushReplacementNamed(
-                      context, RouteMapping.RESULTS.path,
-                      arguments: ResultsPageArguments(
-                          runningProgressState.averageSpeeds,
-                          speedUnitClear,
-                          distanceUnit))),
-            ],
-          );
-        },
-      ),
     );
+  }
+
+  _generateResultsPageArguments(RunningProgressState runningProgressState,
+      SpeedUnit speedUnit, DistanceUnit distanceUnit) {
+    var results = [
+      Result(runningProgressState.averageSpeed, speedUnit.unit.toString(),
+          "Speed"),
+      Result(runningProgressState.distanceTravelled,
+          distanceUnit.unit.toString(), "Travelled distance")
+    ];
+
+    return ResultsPageArguments(results);
   }
 
   _createTargetSpeedText(context, targetSpeed, SpeedUnit speedUnitClear) {
@@ -77,22 +75,5 @@ class TrackingPage extends StatelessWidget {
         targetSpeedAsString.toString() +
         " " +
         speedUnitClear.unit;
-  }
-
-  _createSnackBar(context, SpeedAverageEntry speedAverage,
-      DistanceUnit distanceUnit, SpeedUnit speedUnit) {
-    String snackBarText = S.of(context).milestoneAt +
-        " " +
-        speedAverage.distancePoint.toStringAsFixed(1) +
-        " " +
-        distanceUnit.unit +
-        " - " +
-        speedAverage.speedAverage.toStringAsFixed(1) +
-        " " +
-        "${speedUnit.unit} ${S.of(context).averageSpeed}";
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(snackBarText),
-    ));
   }
 }

@@ -1,12 +1,7 @@
-import 'package:runanonymous/bloc/running_progress/speed_average_entry.dart';
-import 'package:runanonymous/common/unit/distance_unit.dart';
-import 'package:runanonymous/common/unit/speed_unit.dart';
+import 'package:runanonymous/screen/result.dart';
 
 class ResultsPageArguments {
-  final SpeedUnit speedUnitClear;
-  final DistanceUnit distanceUnit;
-  final List<SpeedAverageEntry> averageSpeeds;
+  final List<Result> results;
 
-  ResultsPageArguments(
-      this.averageSpeeds, this.speedUnitClear, this.distanceUnit);
+  ResultsPageArguments(this.results);
 }
