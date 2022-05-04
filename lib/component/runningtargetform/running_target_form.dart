@@ -45,6 +45,7 @@ class RunningTargetFormState extends State<RunningTargetForm> {
             state.speed != null ? state.speed.toStringAsFixed(1) : "--";
         String targetSpeedText =
             S.of(context).runningTargetFormTargetSpeedText +
+                "\n" +
                 targetSpeed.toString();
         return Form(
           key: _formKey,

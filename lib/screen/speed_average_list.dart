@@ -31,7 +31,7 @@ class _SpeedAverageListState extends State<SpeedAverageList> {
     _addItems();
 
     return SizedBox(
-      height: 180,
+      height: 240,
       child: AnimatedList(
         key: _globalKey,
         initialItemCount: 0,

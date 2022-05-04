@@ -2,7 +2,7 @@
   "@@locale": "en",
   "topbarTitle": "Runonymous",
   "runningTargetFormStartButtonLabel": "Start",
-  "runningTargetFormTargetSpeedText": "Target speed: \n",
+  "runningTargetFormTargetSpeedText": "Target speed:",
   "runningTargetFormDistancefieldUnit": "Unit",
   "runningTargetFormDistanceFieldCaption": "Distance",
   "trackingScreenStopSession": "Stop Session",

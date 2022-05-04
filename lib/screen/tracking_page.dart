@@ -48,8 +48,12 @@ class TrackingPage extends StatelessWidget {
                 S.of(context).trackingScreenStopSession,
                 () => Navigator.pushReplacementNamed(
                     context, RouteMapping.RESULTS.path,
-                    arguments: _generateResultsPageArguments(context,
-                        runningProgressState, speedUnitClear, distanceUnit))),
+                    arguments: _generateResultsPageArguments(
+                        context,
+                        runningProgressState,
+                        speedUnitClear,
+                        distanceUnit,
+                        targetSpeed))),
           ],
         );
       },
@@ -60,12 +64,15 @@ class TrackingPage extends StatelessWidget {
       BuildContext context,
       RunningProgressState runningProgressState,
       SpeedUnit speedUnit,
-      DistanceUnit distanceUnit) {
+      DistanceUnit distanceUnit,
+      double targetSpeed) {
     var results = [
       Result(runningProgressState.averageSpeed, speedUnit.unit.toString(),
           S.of(context).averageSpeed),
       Result(runningProgressState.distanceTravelled,
-          distanceUnit.unit.toString(), S.of(context).travelledDistance)
+          distanceUnit.unit.toString(), S.of(context).travelledDistance),
+      Result(targetSpeed, speedUnit.unit.toString(),
+          S.of(context).runningTargetFormTargetSpeedText)
     ];
 
     return ResultsPageArguments(results);
