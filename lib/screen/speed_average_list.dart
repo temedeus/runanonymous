@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:runanonymous/generated/l10n.dart';
 import 'package:runanonymous/screen/result.dart';
 
 class SpeedAverageList extends StatefulWidget {
@@ -29,7 +30,7 @@ class _SpeedAverageListState extends State<SpeedAverageList> {
   @override
   Widget build(BuildContext context) {
     _addItems();
-
+    S s = S.of(context);
     return SizedBox(
       height: 240,
       child: AnimatedList(
@@ -46,7 +47,7 @@ class _SpeedAverageListState extends State<SpeedAverageList> {
                 children: [
                   Text(element.title, style: const TextStyle(fontSize: 22)),
                   Row(
-                    children: _generateDisplayItems(element),
+                    children: _generateDisplayItems(element, s),
                   ),
                 ],
               ));
@@ -55,11 +56,13 @@ class _SpeedAverageListState extends State<SpeedAverageList> {
     );
   }
 
-  List<Widget> _generateDisplayItems(Result element) {
+  List<Widget> _generateDisplayItems(Result element, S s) {
     var displayItems = [
       Text(element.result.toStringAsFixed(2),
           style: const TextStyle(fontSize: 35)),
-      Text(element.unit, style: const TextStyle(fontSize: 18))
+      Text(element.unit, style: const TextStyle(fontSize: 18)),
+      Text(" (" + s.target + element.target.toStringAsFixed(2) + ")",
+          style: const TextStyle(fontSize: 20)),
     ];
 
     return displayItems;

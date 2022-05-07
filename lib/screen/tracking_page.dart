@@ -53,7 +53,8 @@ class TrackingPage extends StatelessWidget {
                         runningProgressState,
                         speedUnitClear,
                         distanceUnit,
-                        targetSpeed))),
+                        targetSpeed,
+                        targetDistance))),
           ],
         );
       },
@@ -65,14 +66,16 @@ class TrackingPage extends StatelessWidget {
       RunningProgressState runningProgressState,
       SpeedUnit speedUnit,
       DistanceUnit distanceUnit,
-      double targetSpeed) {
+      double targetSpeed,
+      double targetDistance) {
     var results = [
       Result(runningProgressState.averageSpeed, speedUnit.unit.toString(),
-          S.of(context).averageSpeed),
-      Result(runningProgressState.distanceTravelled,
-          distanceUnit.unit.toString(), S.of(context).travelledDistance),
-      Result(targetSpeed, speedUnit.unit.toString(),
-          S.of(context).runningTargetFormTargetSpeedText)
+          S.of(context).averageSpeed, targetSpeed),
+      Result(
+          runningProgressState.distanceTravelled,
+          distanceUnit.unit.toString(),
+          S.of(context).travelledDistance,
+          targetDistance),
     ];
 
     return ResultsPageArguments(results);
