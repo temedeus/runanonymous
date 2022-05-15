@@ -8,7 +8,8 @@ void main() {
   testWidgets('SpeedText is present', (WidgetTester tester) async {
     await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
-        child: (SpeedText(13.0, SpeedStatus.ON_TIME, SpeedUnit.KMH))));
+        child: (SpeedText(
+            13.0, SpeedStatus.ON_TIME, SpeedUnit.KMH, Duration(seconds: 0)))));
     final materialAppFinder = find.byType(SpeedText);
     expect((materialAppFinder), findsOneWidget);
   });

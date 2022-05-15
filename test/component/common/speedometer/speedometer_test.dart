@@ -23,7 +23,7 @@ void main() {
   });
 
   testWidgets('Speedometer is pumped', (WidgetTester tester) async {
-    await tester.pumpWidget(Speedometer(13.0, SpeedUnit.KMH));
+    await tester.pumpWidget(Speedometer(13.0, SpeedUnit.KMH, Stopwatch()));
     final speedometerFinder = find.byType(Speedometer);
     expect((speedometerFinder), findsOneWidget);
   });

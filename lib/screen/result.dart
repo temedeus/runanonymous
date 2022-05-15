@@ -1,8 +1,8 @@
 class Result {
-  final double result;
-  final double target;
-  final String unit;
+  final String result;
+  final String target;
   final String title;
+  String unit;
 
-  Result(this.result, this.unit, this.title, this.target);
+  Result(this.result, this.target, this.title, this.unit);
 }

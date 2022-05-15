@@ -21,16 +21,19 @@ import 'package:runanonymous/service/timer/timer_service_interface.dart';
 class Speedometer extends StatefulWidget {
   final double targetSpeed;
   final SpeedUnit speedUnit;
+  final Stopwatch stopwatch;
 
-  Speedometer(this.targetSpeed, this.speedUnit);
+  Speedometer(this.targetSpeed, this.speedUnit, this.stopwatch);
 
   @override
-  _SpeedometerState createState() => _SpeedometerState(targetSpeed, speedUnit);
+  _SpeedometerState createState() =>
+      _SpeedometerState(targetSpeed, speedUnit, stopwatch);
 }
 
 class _SpeedometerState extends State<Speedometer> {
   final SpeedUnit speedUnit;
   final double targetSpeed;
+  final stopwatch;
 
   final AppRetainServiceInterface _appRetainServiceInterface =
       locator<AppRetainServiceInterface>();
@@ -46,7 +49,7 @@ class _SpeedometerState extends State<Speedometer> {
   double _previousLatitude;
   double _previousLongitude;
 
-  _SpeedometerState(this.targetSpeed, this.speedUnit) {
+  _SpeedometerState(this.targetSpeed, this.speedUnit, this.stopwatch) {
     _locationFacade = _locationService.createLocation();
   }
 
@@ -57,6 +60,7 @@ class _SpeedometerState extends State<Speedometer> {
     _locationFacade.ensureLocationAvailable((event) {
       setState(() {
         _currentLocation = event;
+        stopwatch.start();
       });
     });
     _appRetainServiceInterface.startService();
@@ -67,7 +71,8 @@ class _SpeedometerState extends State<Speedometer> {
     return _currentLocation == null
         ? CircularProgressIndicator()
         : AppRetainWidget(
-            child: SpeedText(_convertedSpeed(), _speedStatus, speedUnit),
+            child: SpeedText(_convertedSpeed(), _speedStatus, speedUnit,
+                this.stopwatch.elapsed),
           );
   }
 
@@ -145,6 +150,8 @@ class _SpeedometerState extends State<Speedometer> {
     _timerFacade.stopTimer();
     _locationFacade.cancelLocationSubscription();
     _appRetainServiceInterface.stopService();
+    stopwatch.stop();
+    stopwatch.reset();
     super.dispose();
   }
 }

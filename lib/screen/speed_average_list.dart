@@ -16,7 +16,7 @@ class SpeedAverageList extends StatefulWidget {
 
 class _SpeedAverageListState extends State<SpeedAverageList> {
   final List<Result> _initialItems;
-  List _items = [];
+  List<Result> _items = [];
 
   final GlobalKey<AnimatedListState> _globalKey;
 
@@ -58,11 +58,9 @@ class _SpeedAverageListState extends State<SpeedAverageList> {
 
   List<Widget> _generateDisplayItems(Result element, S s) {
     var displayItems = [
-      Text(element.result.toStringAsFixed(2),
-          style: const TextStyle(fontSize: 35)),
+      Text(element.result, style: const TextStyle(fontSize: 35)),
       Text(element.unit, style: const TextStyle(fontSize: 18)),
-      Text(" (" + s.target + element.target.toStringAsFixed(2) + ")",
-          style: const TextStyle(fontSize: 20)),
+      Text(" (" + element.target + ")", style: const TextStyle(fontSize: 20)),
     ];
 
     return displayItems;

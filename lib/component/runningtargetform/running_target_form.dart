@@ -65,7 +65,7 @@ class RunningTargetFormState extends State<RunningTargetForm> {
                   child: MenuButton(
                       S.of(context).runningTargetFormStartButtonLabel, () {
                     _formSubmitAction(state.speedUnit, state.distanceUnit,
-                        state.distance, state.speed);
+                        state.distance, state.speed, state.time);
                   })),
             ],
           ),
@@ -75,10 +75,10 @@ class RunningTargetFormState extends State<RunningTargetForm> {
   }
 
   void _formSubmitAction(SpeedUnit speedUnit, DistanceUnit distanceUnit,
-      double targetDistance, double targetSpeed) {
+      double targetDistance, double targetSpeed, RunningTime runningTime) {
     if (_formKey.currentState.validate()) {
       var trackingPageArguments = TrackingPageArguments(
-          speedUnit, distanceUnit, targetDistance, targetSpeed);
+          speedUnit, distanceUnit, targetDistance, targetSpeed, runningTime);
       Navigator.pushNamed(context, RouteMapping.TRACKING.path,
           arguments: trackingPageArguments);
     }

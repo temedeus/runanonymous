@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
+import 'package:runanonymous/common/util.dart';
 
 import '../../common/unit/speed_status.dart';
 
 class SpeedText extends StatelessWidget {
-  SpeedText(this.speed, this.speedStatus, this.speedUnit);
+  SpeedText(this.speed, this.speedStatus, this.speedUnit, this.elapsed);
   final double speed;
   final SpeedStatus speedStatus;
   final SpeedUnit speedUnit;
+  final Duration elapsed;
 
   @override
   Widget build(BuildContext context) {
+    final util = Util();
     return Container(
-      child: Text(_convertToDisplayValue(speed),
+      child: Text(
+          _convertToDisplayValue(speed) +
+              "\n" +
+              util.parseStopWatchTime(elapsed),
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
       decoration: new BoxDecoration(

@@ -6,6 +6,7 @@ import 'package:runanonymous/bloc/running_progress/running_progress_state.dart';
 import 'package:runanonymous/common/route_mapping.dart';
 import 'package:runanonymous/common/unit/distance_unit.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
+import 'package:runanonymous/common/util.dart';
 import 'package:runanonymous/component/common/padded_text.dart';
 import 'package:runanonymous/component/speedometer/speedometer.dart';
 import 'package:runanonymous/generated/l10n.dart';
@@ -17,6 +18,8 @@ import '../component/common/main_menu_button.dart';
 
 /// Tracking page when user is running.
 class TrackingPage extends StatelessWidget {
+  final _stopWatch = Stopwatch();
+
   @override
   Widget build(BuildContext context) {
     final args =
@@ -43,39 +46,51 @@ class TrackingPage extends StatelessWidget {
             PaddedText(
                 _createTargetSpeedText(context, targetSpeed, speedUnitClear),
                 24),
-            Speedometer(targetSpeed, speedUnitClear),
+            Speedometer(targetSpeed, speedUnitClear, _stopWatch),
             MenuButton(
                 S.of(context).trackingScreenStopSession,
-                () => Navigator.pushReplacementNamed(
-                    context, RouteMapping.RESULTS.path,
-                    arguments: _generateResultsPageArguments(
-                        context,
-                        runningProgressState,
-                        speedUnitClear,
-                        distanceUnit,
-                        targetSpeed,
-                        targetDistance))),
+                () => _navigateToResultsPage(
+                    context, runningProgressState, args)),
           ],
         );
       },
     );
   }
 
+  _navigateToResultsPage(context, runningProgressState,
+      TrackingPageArguments trackingPageArguments) {
+    Navigator.pushReplacementNamed(context, RouteMapping.RESULTS.path,
+        arguments: _generateResultsPageArguments(
+            context, runningProgressState, trackingPageArguments));
+  }
+
   _generateResultsPageArguments(
       BuildContext context,
       RunningProgressState runningProgressState,
-      SpeedUnit speedUnit,
-      DistanceUnit distanceUnit,
-      double targetSpeed,
-      double targetDistance) {
+      TrackingPageArguments trackingPageArguments) {
+    final Util util = Util();
     var results = [
-      Result(runningProgressState.averageSpeed, speedUnit.unit.toString(),
-          S.of(context).averageSpeed, targetSpeed),
       Result(
-          runningProgressState.distanceTravelled,
-          distanceUnit.unit.toString(),
-          S.of(context).travelledDistance,
-          targetDistance),
+        runningProgressState.averageSpeed.toStringAsFixed(2),
+        trackingPageArguments.targetSpeed.toStringAsFixed(2),
+        S.of(context).averageSpeed,
+        trackingPageArguments.speedUnitClear.unit.toString(),
+      ),
+      Result(
+        runningProgressState.distanceTravelled.toStringAsFixed(2),
+        trackingPageArguments.targetDistance.toStringAsFixed(2),
+        S.of(context).travelledDistance,
+        trackingPageArguments.distanceUnit.unit.toString(),
+      ),
+      Result(
+        util.parseStopWatchTime(_stopWatch.elapsed),
+        util.parseStopWatchTime(Duration(
+            hours: trackingPageArguments.targetTime.hour,
+            minutes: trackingPageArguments.targetTime.minute,
+            seconds: trackingPageArguments.targetTime.seconds)),
+        S.of(context).runningTime,
+        "hh:mm:ss",
+      )
     ];
 
     return ResultsPageArguments(results);

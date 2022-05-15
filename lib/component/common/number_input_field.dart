@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:runanonymous/validator/validators.dart';
 
@@ -26,9 +25,7 @@ class NumberInputField extends StatelessWidget {
         inputFormatters: [],
         enabled: enabled,
         controller: controller,
-        validator: validator != null
-            ? validator
-            : Validators().defaultNumericValidator,
+        validator: validator ?? Validators().defaultNumericValidator,
         onSaved: onSaved);
   }
 }
