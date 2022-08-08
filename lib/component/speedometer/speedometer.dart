@@ -48,6 +48,7 @@ class _SpeedometerState extends State<Speedometer> {
 
   double _previousLatitude;
   double _previousLongitude;
+  Duration _elapsedTime;
 
   _SpeedometerState(this.targetSpeed, this.speedUnit, this.stopwatch) {
     _locationFacade = _locationService.createLocation();
@@ -56,13 +57,13 @@ class _SpeedometerState extends State<Speedometer> {
   @override
   void initState() {
     super.initState();
-    _initTimer();
     _locationFacade.ensureLocationAvailable((event) {
       setState(() {
         _currentLocation = event;
         stopwatch.start();
       });
     });
+    _initTimer();
     _appRetainServiceInterface.startService();
   }
 
@@ -71,8 +72,8 @@ class _SpeedometerState extends State<Speedometer> {
     return _currentLocation == null
         ? CircularProgressIndicator()
         : AppRetainWidget(
-            child: SpeedText(_convertedSpeed(), _speedStatus, speedUnit,
-                this.stopwatch.elapsed),
+            child: SpeedText(
+                _convertedSpeed(), _speedStatus, speedUnit, this._elapsedTime),
           );
   }
 
@@ -111,8 +112,11 @@ class _SpeedometerState extends State<Speedometer> {
           }
         }
       }
+      _elapsedTime = this.stopwatch.elapsed;
     };
+
     _timerFacade = _timerService.provideTimer(callback);
+
     _timerFacade.startTimer();
   }
 

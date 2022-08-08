@@ -7,7 +7,7 @@ class TimerFacade {
   TimerFacade(this._callback);
 
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       _callback();
     });
   }
