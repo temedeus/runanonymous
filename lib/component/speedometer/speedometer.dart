@@ -11,12 +11,12 @@ import 'package:runanonymous/common/unit/speed_status.dart';
 import 'package:runanonymous/common/unit/speed_unit.dart';
 import 'package:runanonymous/component/common/app_retain_widget.dart';
 import 'package:runanonymous/component/speedometer/speed_text.dart';
-import 'package:runanonymous/service/app_retain/app_retain_service_interface.dart';
-import 'package:runanonymous/service/location/location_interface.dart';
+import 'package:runanonymous/service/app_retain/app_retain_service.dart';
+import 'package:runanonymous/service/location/location_facade.dart';
 import 'package:runanonymous/service/location/location_service_interface.dart';
 import 'package:runanonymous/service/service_locator.dart';
-import 'package:runanonymous/service/timer/timer_interface.dart';
-import 'package:runanonymous/service/timer/timer_service_interface.dart';
+import 'package:runanonymous/service/timer/timer_facade.dart';
+import 'package:runanonymous/service/timer/timer_service.dart';
 
 class Speedometer extends StatefulWidget {
   final double targetSpeed;
@@ -35,16 +35,16 @@ class _SpeedometerState extends State<Speedometer> {
   final double targetSpeed;
   final stopwatch;
 
-  final AppRetainServiceInterface _appRetainServiceInterface =
-      locator<AppRetainServiceInterface>();
+  final AppRetainService _appRetainServiceInterface =
+      locator<AppRetainService>();
   final LocationServiceInterface _locationService =
       locator<LocationServiceInterface>();
   final TimerServiceInterface _timerService = locator<TimerServiceInterface>();
 
-  LocationInterface _locationFacade;
+  LocationFacade _locationFacade;
   LocationData _currentLocation;
   SpeedStatus _speedStatus = SpeedStatus.SLOW;
-  TimerInterface _timerFacade;
+  TimerFacade _timerFacade;
 
   double _previousLatitude;
   double _previousLongitude;

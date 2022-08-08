@@ -1,6 +1,6 @@
-import 'package:runanonymous/service/app_retain/app_retain_service_interface.dart';
+import 'package:runanonymous/service/app_retain/app_retain_service.dart';
 
-class AppRetainServiceMock implements AppRetainServiceInterface {
+class AppRetainServiceMock implements AppRetainService {
   @override
   void sendToForeground() {
     // TODO: implement sendToForeground

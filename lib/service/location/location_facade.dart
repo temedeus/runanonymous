@@ -2,15 +2,12 @@ import 'dart:async';
 
 import 'package:location/location.dart';
 
-import 'location_interface.dart';
-
-class LocationFacade implements LocationInterface {
+class LocationFacade {
   Location _location;
 
   PermissionStatus _permissionGranted;
   StreamSubscription<LocationData> _locationSubscription;
 
-  @override
   void ensureLocationAvailable(locationChangedListener) async {
     _location = Location();
     bool _serviceEnabled;
@@ -34,7 +31,6 @@ class LocationFacade implements LocationInterface {
         _location.onLocationChanged.listen(locationChangedListener);
   }
 
-  @override
   void cancelLocationSubscription() {
     if (_locationSubscription != null) _locationSubscription.cancel();
   }

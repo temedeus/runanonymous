@@ -1,11 +1,11 @@
-import 'package:runanonymous/service/timer/timer_interface.dart';
-import 'package:runanonymous/service/timer/timer_service_interface.dart';
+import 'package:runanonymous/service/timer/timer_facade.dart';
+import 'package:runanonymous/service/timer/timer_service.dart';
 
 import 'TimerFacadeMock.dart';
 
 class TimerServiceMock implements TimerServiceInterface {
   @override
-  TimerInterface provideTimer(Function callback) {
+  TimerFacade provideTimer(Function callback) {
     return TimerFacadeMock();
   }
 }

@@ -1,5 +1,7 @@
-import 'location_interface.dart';
+import 'location_facade.dart';
 
-abstract class LocationServiceInterface {
-  LocationInterface createLocation();
+class LocationServiceInterface {
+  LocationFacade createLocation() {
+    return LocationFacade();
+  }
 }
